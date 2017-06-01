@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
+
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>no.priv.bang.karaf</groupId>
+ <artifactId>liquibase-core-karaf</artifactId>
+ <version>1.0.0-SNAPSHOT</version>
+
+ <packaging>pom</packaging>
+
+ <name>liquibase-core karaf feature</name>
+
+ <properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <maven.bundle.plugin.version>2.5.3</maven.bundle.plugin.version>
+  <karaf.version>4.1.1</karaf.version>
+  <liquibase.version>3.5.3</liquibase.version>
+  <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
+  <snakeyaml.version>1.17</snakeyaml.version>
+ </properties>
+
+ <dependencyManagement>
+  <dependencies>
+   <dependency>
+    <groupId>com.mattbertolini</groupId>
+    <artifactId>liquibase-slf4j</artifactId>
+    <version>${liquibase-slf4j.version}</version>
+    <scope>provided</scope>
+   </dependency>
+   <dependency>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-core</artifactId>
+    <version>${liquibase.version}</version>
+    <scope>provided</scope>
+   </dependency>
+  </dependencies>
+ </dependencyManagement>
+
+ <build>
+  <pluginManagement>
+   <plugins>
+    <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-compiler-plugin</artifactId>
+     <version>3.5.1</version>
+     <configuration>
+      <source>1.8</source>
+      <target>1.8</target>
+     </configuration>
+    </plugin>
+    <plugin>
+     <groupId>org.apache.felix</groupId>
+     <artifactId>maven-bundle-plugin</artifactId>
+     <version>${maven.bundle.plugin.version}</version>
+    </plugin>
+    <plugin>
+     <groupId>org.apache.karaf.tooling</groupId>
+     <artifactId>karaf-maven-plugin</artifactId>
+     <version>${karaf.version}</version>
+     <extensions>true</extensions>
+     <configuration>
+      <startLevel>80</startLevel>
+      <includeTransitiveDependency>false</includeTransitiveDependency>
+      <aggregateFeatures>false</aggregateFeatures>
+      <includeProjectArtifact>true</includeProjectArtifact>
+     </configuration>
+     <executions>
+      <execution>
+       <id>generate-features-file</id>
+       <phase>package</phase>
+       <goals>
+        <goal>features-generate-descriptor</goal>
+       </goals>
+      </execution>
+     </executions>
+    </plugin>
+   </plugins>
+  </pluginManagement>
+  <plugins>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <dependencies>
+     <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>maven-bundle-plugin</artifactId>
+      <version>${maven.bundle.plugin.version}</version>
+      <type>maven-plugin</type>
+     </dependency>
+    </dependencies>
+    <extensions>true</extensions>
+   </plugin>
+   <plugin>
+    <groupId>org.apache.karaf.tooling</groupId>
+    <artifactId>karaf-maven-plugin</artifactId>
+    <configuration>
+     <includeProjectArtifact>false</includeProjectArtifact>
+    </configuration>
+   </plugin>
+  </plugins>
+ </build>
+
+ <modules>
+  <module>com.mattbertolini.liquibase-slf4j-osgi</module>
+ </modules>
+
+</project>

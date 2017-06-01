@@ -1,0 +1,61 @@
+* A Karaf feature for liquibase-core
+
+This project contains a [[https://karaf.apache.org/manual/latest/provisioning][karaf feature]] for easily using [[https://en.wikipedia.org/wiki/Liquibase][Liquibase]] from OSGi-based applications running in [[http://karaf.apache.org][apache karaf]].
+
+If you haven't yet encountered it: liquibase is a really smooth solution for handling your RDBMS schemas.  Smooth initial startup, and smooth evolution of schemas (adding columns, adding tables, dropping columns and dropping tables).
+
+Liquibase does the same job as ad-hoc delta script solutions, but liquibase does the job in a clean and robust way, tested and refined over the 11 years of its existence.
+
+From a karaf user standpoint, liquibase has one major quirk and annoyance: the liquibase logging (as in "logging of errors and messages", not as in "database schema changelogs") floods the karaf console.  This karaf feature aims to fix that, by putting the liquibase logging messages into the regular karaf log (using [[https://github.com/mattbertolini/liquibase-slf4j][liquibase-slf4j]] to reroute the logging).
+
+** Installing the liquibase feature in karaf
+
+To install this feature:
+ 1. clone this project and build it with maven:
+    #+BEGIN_EXAMPLE
+      mkdir -p ~/git
+      cd ~/git
+      git clone https://github.com/steinarb/liquibase-karaf-feature/
+      cd liquibase-karaf-feature
+      mvn clean install
+    #+END_EXAMPLE
+ 2. start karaf and give the following commands to the karaf console:
+    #+BEGIN_EXAMPLE
+      feature:repo-add mvn:no.priv.bang.karaf/liquibase-core-karaf/LATEST/xml/features
+      feature:install liquibase-core
+    #+END_EXAMPLE
+
+After this, [[http://www.liquibase.org/javadoc/liquibase/Liquibase.html][the liquibase Java API]] is available to your OSGi applications and the liquibase logging will go to the karaf log.
+
+** Notes on the liquibase logging issues
+
+The liquibase logger can be replaced if liquibase finds an implementation of the [[http://www.liquibase.org/javadoc/liquibase/logging/Logger.html][Logger]] interface in the package "liquibase.ext.logger" (or a sub-package of this package).  The requirements to replace the liquibase logger are outlined in the article [[http://www.bennybottema.com/2013/12/29/fixing-liquibase-logging-in-spring/][Fixing liquibase logging (in Spring) with SLF4J and Log4J]].
+
+There already is a solution that uses the approach outlined in the article to replace the liquibase logger with [[https://www.slf4j.org][slf4j]]. This solution is called [[https://github.com/mattbertolini/liquibase-slf4j][liquibase-slf4j]], and for a non-OSGi program using slf4j, it is enough to add a maven dependency to liquibase-slf4j.
+
+Using liquibase-slf4j won't work out of the box with karaf:
+ 1. liquibase-slf4j isn't an OSGi bundle
+ 2. Even if liquibase-slf4j is made into an OSGi bundle (e.g. by using the wrap protocol in karaf to load the maven dependency), the classloader won't find the replacement logger
+
+[[http://karaf.922171.n3.nabble.com/Experiences-with-karaf-and-liquibase-tp4050470p4050471.html][This message on the karaf mailing list]] outlines the necessary approach:
+ 1. Make the liquibase-slf4j into an [[https://www.ibm.com/support/knowledgecenter/was_beta_devtools/com.ibm.websphere.wdt.doc/topics/cbundlefragment.htm][OSGi fragment]] instead of an OSGi bundle
+ 2. Attach the liquibase-slf4j OSGi fragment to the liquibase-core bundle
+
+This approach effectively makes the liquibase-slf4j contents part of the liquibase-core bundle, and the liquibase classpath scanner will find the replacement logger.
+
+*** Feature uninstallment issue with the liquibase-slf4j fragment bundle
+
+With karaf 4.1.1 (verified on both Windows 7 and debian GNU/linux, Java 1.8 both places), running the following command will shut down karaf:
+#+BEGIN_EXAMPLE
+  feature:uninstall liquibase-core
+#+END_EXAMPLE
+
+With karaf 4.0.9 and karaf 4.0.7, uninstalling the liquibase-core doesn't crash karaf.
+
+If liquibase-slf4j is removed from the "liquibase-core" feature, then uninstalling the feature won't crash karaf.  So the problem is related to differences in logging from karaf 4.0.9 and 4.1.1.
+
+* License
+
+This project is licensed with the [[https://www.apache.org/licenses/LICENSE-2.0][Apache v 2.0 license]] (since this is the license used by both [[http://www.liquibase.org/faq.html#what-license-is-liquibase-released-under][liquibase]] and [[https://github.com/apache/karaf/blob/master/LICENSE][karaf]]).
+
+The details of the license can be found in the LICENSE file.
