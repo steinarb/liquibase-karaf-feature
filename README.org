@@ -54,6 +54,8 @@ With karaf 4.0.9 and karaf 4.0.7, uninstalling the liquibase-core doesn't crash 
 
 If liquibase-slf4j is removed from the "liquibase-core" feature, then uninstalling the feature won't crash karaf.  So the problem is related to differences in logging from karaf 4.0.9 and 4.1.1.
 
+This has been reported as karaf bug [[https://issues.apache.org/jira/browse/KARAF-5174][file:https://img.shields.io/jira/issue/https/issues.apache.org/jira/KARAF-5174.svg]].
+
 * License
 
 This project is licensed with the [[https://www.apache.org/licenses/LICENSE-2.0][Apache v 2.0 license]] (since this is the license used by both [[http://www.liquibase.org/faq.html#what-license-is-liquibase-released-under][liquibase]] and [[https://github.com/apache/karaf/blob/master/LICENSE][karaf]]).
