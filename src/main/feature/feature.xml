@@ -3,6 +3,6 @@
  <feature name="liquibase-core" start-level="40" version="${liquibase.version}">
   <bundle>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
   <bundle>mvn:org.liquibase/liquibase-core/${liquibase.version}</bundle>
-  <bundle start-level="35">mvn:no.priv.bang.ukelonn.rebundled/liquibase-slf4j-osgi/${liquibase-slf4j.version}</bundle>
+  <bundle start-level="35">mvn:no.priv.bang.karaf/liquibase-slf4j-osgi/${liquibase-slf4j.version}</bundle>
  </feature>
 </features>
