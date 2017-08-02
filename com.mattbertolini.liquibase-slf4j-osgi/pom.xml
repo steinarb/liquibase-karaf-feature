@@ -7,10 +7,9 @@
  </parent>
 
  <artifactId>liquibase-slf4j-osgi</artifactId>
- <version>${liquibase-slf4j.version}</version>
  <packaging>bundle</packaging>
 
- <name>liquibase-slf4j ${project.version} made an OSGi bundle fragment of org.liquibase.core</name>
+ <name>liquibase-slf4j ${liquibase-slf4j.version} made an OSGi bundle fragment of org.liquibase.core</name>
 
  <dependencies>
   <dependency>
@@ -69,7 +68,7 @@
       <configuration>
        <artifacts>
         <artifact>
-         <file>target/dependency/liquibase-slf4j-${version}-sources.jar</file>
+         <file>target/dependency/liquibase-slf4j-${liquibase-slf4j.version}-sources.jar</file>
          <classifier>sources</classifier>
         </artifact>
        </artifacts>
