@@ -109,11 +109,26 @@
      <includeProjectArtifact>false</includeProjectArtifact>
     </configuration>
    </plugin>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-release-plugin</artifactId>
+    <version>2.5.3</version>
+    <configuration>
+     <pushChanges>false</pushChanges>
+     <localCheckout>true</localCheckout>
+    </configuration>
+   </plugin>
   </plugins>
  </build>
 
  <modules>
   <module>com.mattbertolini.liquibase-slf4j-osgi</module>
  </modules>
+
+ <scm>
+  <url>https://github.com/steinarb/liquibase-karaf-feature.git</url>
+  <connection>scm:git:https://github.com/steinarb/liquibase-karaf-feature.git</connection>
+  <tag>HEAD</tag>
+ </scm>
 
 </project>
