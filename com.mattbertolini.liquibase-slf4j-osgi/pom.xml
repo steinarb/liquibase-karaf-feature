@@ -56,13 +56,23 @@
     <version>3.0.1</version>
     <executions>
      <execution>
-      <id>copy-dependencies</id>
+      <id>copy-dependencies-sources</id>
       <phase>validate</phase>
       <goals>
        <goal>copy-dependencies</goal>
       </goals>
       <configuration>
        <classifier>sources</classifier>
+      </configuration>
+     </execution>
+     <execution>
+      <id>copy-dependencies-javadoc</id>
+      <phase>validate</phase>
+      <goals>
+       <goal>copy-dependencies</goal>
+      </goals>
+      <configuration>
+       <classifier>javadoc</classifier>
       </configuration>
      </execution>
     </executions>
@@ -83,6 +93,10 @@
         <artifact>
          <file>target/dependency/liquibase-slf4j-${liquibase-slf4j.version}-sources.jar</file>
          <classifier>sources</classifier>
+        </artifact>
+        <artifact>
+         <file>target/dependency/liquibase-slf4j-${liquibase-slf4j.version}-javadoc.jar</file>
+         <classifier>javadoc</classifier>
         </artifact>
        </artifacts>
       </configuration>
