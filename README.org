@@ -60,6 +60,8 @@ This issue is verified fixed in karaf 4.1.2-SNAPSHOT.
 
 * License
 
-This project is licensed with the [[https://www.apache.org/licenses/LICENSE-2.0][Apache v 2.0 license]] (since this is the license used by both [[http://www.liquibase.org/faq.html#what-license-is-liquibase-released-under][liquibase]] and [[https://github.com/apache/karaf/blob/master/LICENSE][karaf]]).
+This maven project is licensed with the [[https://www.apache.org/licenses/LICENSE-2.0][Apache v 2.0 license]].
 
 The details of the license can be found in the LICENSE file.
+
+The  [[https://github.com/mattbertolini/liquibase-slf4j][liquibase-slf4j]] jar is covered with the MIT license, copyright 2012-2015 Matt Bertolini.  This license and copyright also covers the rebundled version of the jar that results from the "com.mattbertolini.liquibase-slf4j-osgi" maven module.
