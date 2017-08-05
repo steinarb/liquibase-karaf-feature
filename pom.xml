@@ -22,6 +22,13 @@
 
  <name>liquibase-core karaf feature</name>
 
+ <developers>
+  <developer>
+   <name>Steinar Bang</name>
+   <email>sb@dod.no</email>
+  </developer>
+ </developers>
+
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <maven.bundle.plugin.version>2.5.3</maven.bundle.plugin.version>
