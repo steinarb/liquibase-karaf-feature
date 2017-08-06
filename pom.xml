@@ -48,7 +48,7 @@
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <maven.bundle.plugin.version>2.5.3</maven.bundle.plugin.version>
   <karaf.version>4.0.7</karaf.version>
-  <liquibase.version>3.5.3</liquibase.version>
+  <liquibase.version>${project.version}</liquibase.version>
   <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
   <snakeyaml.version>1.17</snakeyaml.version>
  </properties>
