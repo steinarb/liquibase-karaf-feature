@@ -22,6 +22,19 @@
 
  <name>liquibase-core karaf feature</name>
 
+ <licenses>
+  <license>
+   <name>Apache License - v 2.0</name>
+   <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+   <comments>Applies to the files in this maven project</comments>
+  </license>
+  <license>
+   <name>MIT License</name>
+   <url>https://github.com/mattbertolini/liquibase-slf4j/blob/master/LICENSE</url>
+   <comments>Copyright 2012-2015 Matt Bertolini, applies to the OSGi bundle containing a OSGi-fied liquibase-slf4j jar</comments>
+  </license>
+ </licenses>
+
  <developers>
   <developer>
    <name>Steinar Bang</name>
