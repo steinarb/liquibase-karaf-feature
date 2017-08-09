@@ -19,7 +19,7 @@ To install this feature:
 
 After this, [[http://www.liquibase.org/javadoc/liquibase/Liquibase.html][the liquibase Java API]] is available to your OSGi applications and the liquibase logging will go to the karaf log.
 
-** Using the liquibase from a feature
+** Using liquibase from a karaf feature
 To use liquibase from your own, manually edited, karaf feature, include the feature's feature repository and depend on the liquibase-core feature:
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
