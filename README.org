@@ -31,6 +31,19 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 </features>
 #+END_SRC
 
+** Using liquibase from a generated karaf feature
+
+If you generate your karaf feature repository using the karaf-maven-plugin, you can include the liquibase-core feature into your generated feature repository, by adding this dependency to the maven project building the feature repository:
+#+BEGIN_SRC xml
+  <dependency>
+      <groupId>no.priv.bang.karaf</groupId>
+      <artifactId>liquibase-core-karaf</artifactId>
+      <version>LATEST</version>
+      <type>xml</type>
+      <classifier>features</classifier>
+  </dependency>
+#+END_SRC
+
 ** Building the feature for a different version of Liquibase
 The version number of this karaf feature is intended to be the same as the Liquibase version it is a feature for.
 
