@@ -24,7 +24,7 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
-    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/1.0.0-SNAPSHOT/xml/features</repository>
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/LATEST/xml/features</repository>
     <feature name="ukelonn-db-liquibase">
         <feature>liquibase-core</feature>
     </feature>
