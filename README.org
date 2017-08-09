@@ -11,21 +11,51 @@ From a karaf user standpoint, liquibase has one major quirk and annoyance: the l
 ** Installing the liquibase feature in karaf
 
 To install this feature:
- 1. clone this project and build it with maven:
-    #+BEGIN_EXAMPLE
-      mkdir -p ~/git
-      cd ~/git
-      git clone https://github.com/steinarb/liquibase-karaf-feature/
-      cd liquibase-karaf-feature
-      mvn clean install
-    #+END_EXAMPLE
- 2. start karaf and give the following commands to the karaf console:
+ 1. start karaf and give the following commands to the karaf console:
     #+BEGIN_EXAMPLE
       feature:repo-add mvn:no.priv.bang.karaf/liquibase-core-karaf/LATEST/xml/features
       feature:install liquibase-core
     #+END_EXAMPLE
 
 After this, [[http://www.liquibase.org/javadoc/liquibase/Liquibase.html][the liquibase Java API]] is available to your OSGi applications and the liquibase logging will go to the karaf log.
+
+** Using the liquibase from a feature
+To use liquibase from your own, manually edited, karaf feature, include the feature's feature repository and depend on the liquibase-core feature:
+#+BEGIN_SRC xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/1.0.0-SNAPSHOT/xml/features</repository>
+    <feature name="ukelonn-db-liquibase">
+        <feature>liquibase-core</feature>
+    </feature>
+</features>
+#+END_SRC
+
+** Building the feature for a different version of Liquibase
+The version number of this karaf feature is intended to be the same as the Liquibase version it is a feature for.
+
+This makes it simple for me to roll and release a new version of the feature when a new version of Liquibase is out.
+
+But unfortunately this means that a SNAPSHOT version of the feature won't be able to refer to a real Liquibase version... at least not without a little edit:
+ 1. clone this project:
+    #+BEGIN_EXAMPLE
+      mkdir -p ~/git
+      cd ~/git
+      git clone https://github.com/steinarb/liquibase-karaf-feature/
+    #+END_EXAMPLE
+ 2. edit the pom, changing the liquibase.version property
+    #+BEGIN_SRC xml
+      <liquibase.version>${project.version}</liquibase.version>
+    #+END_SRC
+    change it into an actual version
+    #+BEGIN_SRC xml
+      <liquibase.version>3.5.4</liquibase.version>
+    #+END_SRC
+ 3. then build the project with maven:
+    #+BEGIN_EXAMPLE
+      cd liquibase-karaf-feature
+      mvn clean install
+    #+END_EXAMPLE
 
 ** Notes on the liquibase logging issues
 
