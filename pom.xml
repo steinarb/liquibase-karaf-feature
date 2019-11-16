@@ -24,6 +24,19 @@
     <description>An apache karaf feature for the liquibase RDMBS schema management, including slf4j logging.</description>
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.bundle.plugin.version>2.5.3</maven.bundle.plugin.version>
+        <karaf.version>4.0.7</karaf.version>
+        <liquibase.version>${project.version}</liquibase.version>
+        <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
+        <snakeyaml.version>1.17</snakeyaml.version>
+    </properties>
+
+    <modules>
+        <module>com.mattbertolini.liquibase-slf4j-osgi</module>
+    </modules>
+
     <licenses>
         <license>
             <name>Apache License - v 2.0</name>
@@ -43,15 +56,6 @@
             <email>sb@dod.no</email>
         </developer>
     </developers>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.bundle.plugin.version>2.5.3</maven.bundle.plugin.version>
-        <karaf.version>4.0.7</karaf.version>
-        <liquibase.version>${project.version}</liquibase.version>
-        <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
-        <snakeyaml.version>1.17</snakeyaml.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -156,10 +160,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <modules>
-        <module>com.mattbertolini.liquibase-slf4j-osgi</module>
-    </modules>
 
     <scm>
         <url>https://github.com/steinarb/liquibase-karaf-feature.git</url>
