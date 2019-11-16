@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.priv.bang.karaf</groupId>
     <artifactId>liquibase-core-karaf</artifactId>
-    <version>3.5.5-SNAPSHOT</version>
+    <version>3.5.5</version>
 
     <packaging>pom</packaging>
 
@@ -181,7 +181,7 @@
     <scm>
         <url>https://github.com/steinarb/liquibase-karaf-feature.git</url>
         <connection>scm:git:https://github.com/steinarb/liquibase-karaf-feature.git</connection>
-        <tag>HEAD</tag>
+        <tag>liquibase-core-karaf-3.5.5</tag>
     </scm>
 
     <distributionManagement>
