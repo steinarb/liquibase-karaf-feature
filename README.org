@@ -15,6 +15,7 @@ From a karaf user standpoint, liquibase has one major quirk and annoyance: the l
 
 | Date                   | Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+---------+-------------------+-------------------------+--------------------------------------------------------------|
+| <2019-11-17 Sun 16:01> |   3.6.0 |             3.6.0 |                   2.0.0 |                                                              |
 | <2019-11-16 Sat 23:09> |   3.5.5 |             3.5.5 |                   2.0.0 | Use version 3.5.1 of maven-bundle-plugin                     |
 | <2019-11-16 Sat 11:28> |   3.5.4 |             3.5.4 |                   2.0.0 | Updated pom.xml release config, update karaf to 4.2.7        |
 | <2017-08-06 Sun 18:48> |   3.5.3 |             3.5.3 |                   2.0.0 | First release with the same version as the liquibase version |
@@ -37,7 +38,7 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
-    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/3.5.5/xml/features</repository>
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/3.6.0/xml/features</repository>
     <feature name="ukelonn-db-liquibase">
         <feature>liquibase-core</feature>
     </feature>
@@ -51,7 +52,7 @@ If you generate your karaf feature repository using the karaf-maven-plugin, you 
   <dependency>
       <groupId>no.priv.bang.karaf</groupId>
       <artifactId>liquibase-core-karaf</artifactId>
-      <version>3.5.5</version>
+      <version>3.6.0</version>
       <type>xml</type>
       <classifier>features</classifier>
   </dependency>
