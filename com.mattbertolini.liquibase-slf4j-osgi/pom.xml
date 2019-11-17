@@ -16,7 +16,7 @@
     <parent>
         <groupId>no.priv.bang.karaf</groupId>
         <artifactId>liquibase-core-karaf</artifactId>
-        <version>3.6.1.1</version>
+        <version>3.6.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>liquibase-slf4j-osgi</artifactId>
