@@ -13,6 +13,10 @@ From a karaf user standpoint, liquibase has one major quirk and annoyance: the l
 
 *** Release history
 
+/Note/: The versions 3.8.1 through 3.10.0 aren't proper OSGi bundles, so I haven't created karaf features for these versions.
+
+Version 3.10.1 and 4.0.0 /are/ OSGi bundles and I will create karaf features for these versions.
+
 | Date                   | Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+---------+-------------------+-------------------------+--------------------------------------------------------------|
 | <2019-11-18 Mon 21:25> |   3.8.0 |             3.8.0 |                   2.0.0 |                                                              |
