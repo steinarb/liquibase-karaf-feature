@@ -95,6 +95,14 @@ But unfortunately this means that a SNAPSHOT version of the feature won't be abl
       mvn clean install
     #+END_EXAMPLE
 
+*** Test a new version
+
+I have created the project [[https://github.com/steinarb/liquibase-sample#liqubase-sample][liquibase-sample]] to test new versions of this karaf feature.
+
+The liquibase-sample has a minimal OSGi component that loads and creates a schema in a derby in-memory database from a liquibase changelog file.
+
+The liquibase-sample application can also be used to verify that the liquibase logs are redirected to the karaf logs.
+
 ** Notes on the liquibase logging issues
 
 The liquibase logger can be replaced if liquibase finds an implementation of the [[http://www.liquibase.org/javadoc/liquibase/logging/Logger.html][Logger]] interface in the package "liquibase.ext.logger" (or a sub-package of this package).  The requirements to replace the liquibase logger are outlined in the article [[http://www.bennybottema.com/2013/12/29/fixing-liquibase-logging-in-spring/][Fixing liquibase logging (in Spring) with SLF4J and Log4J]].
