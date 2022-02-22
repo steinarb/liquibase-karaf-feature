@@ -1,4 +1,4 @@
-*  A Karaf feature for liquibase-core
+* A Karaf feature for liquibase-core
 
 This project contains a [[https://karaf.apache.org/manual/latest/provisioning][karaf feature]] for easily using [[https://en.wikipedia.org/wiki/Liquibase][Liquibase]] from OSGi-based applications running in [[http://karaf.apache.org][apache karaf]].
 
