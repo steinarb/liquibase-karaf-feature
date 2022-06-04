@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
+
+    <!-- Copyright 2022 Steinar Bang                                                     -->
+    <!--                                                                                 -->
+    <!-- Licensed under the Apache License, Version 2.0 (the "License");                 -->
+    <!-- you may not use this file except in compliance with the License.                -->
+    <!-- You may obtain a copy of the License at                                         -->
+    <!--   http://www.apache.org/licenses/LICENSE-2.0                                    -->
+    <!-- Unless required by applicable law or agreed to in writing,                      -->
+    <!-- software distributed under the License is distributed on an "AS IS" BASIS,      -->
+    <!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.        -->
+    <!-- See the License for the specific language governing permissions and limitations -->
+    <!-- under the License.                                                              -->
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>no.priv.bang.karaf</groupId>
+        <artifactId>liquibase-integration-test</artifactId>
+        <version>3.8.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>karaf.liquibase.sample</artifactId>
+
+    <name>Liqubase karaf feature sample usage</name>
+    <description>OSGi bundle using the liquibase feature to set up a database, for use in integration test</description>
+
+    <properties>
+        <karaf-feature-name>karaf-liquibase-sample</karaf-feature-name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>no.priv.bang.karaf</groupId>
+            <artifactId>liquibase-core-karaf</artifactId>
+            <version>${project.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.cmpn</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.jdbc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.priv.bang.osgi.service.adapters</groupId>
+            <artifactId>service-mocks</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc-config</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc-pool-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc-derby</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Import-Package>
+                            org.osgi.service.log;version="[1.4,2)",
+                            *
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

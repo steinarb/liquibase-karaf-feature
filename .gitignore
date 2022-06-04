@@ -1,4 +1,6 @@
-target/
+.classpath
 .project
 .settings
-.classpath
+/.metadata/
+derby.log
+target/

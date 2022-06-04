@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="sampleapp.db.liquibase.test">
+
+    <!-- Copyright 2022 Steinar Bang                                                     -->
+    <!--                                                                                 -->
+    <!-- Licensed under the Apache License, Version 2.0 (the "License");                 -->
+    <!-- you may not use this file except in compliance with the License.                -->
+    <!-- You may obtain a copy of the License at                                         -->
+    <!--   http://www.apache.org/licenses/LICENSE-2.0                                    -->
+    <!-- Unless required by applicable law or agreed to in writing,                      -->
+    <!-- software distributed under the License is distributed on an "AS IS" BASIS,      -->
+    <!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.        -->
+    <!-- See the License for the specific language governing permissions and limitations -->
+    <!-- under the License.                                                              -->
+
+    <feature name="${karaf-feature-name}">
+        <feature>scr</feature>
+        <feature>pax-jdbc-derby</feature>
+    </feature>
+    <feature name="sample-db" description="sample test DataSource" version="${project.version}">
+        <config name="org.ops4j.datasource-sample">
+            osgi.jdbc.driver.name=derby
+            dataSourceName=jdbc/sample
+            url=jdbc:derby:memory:sample;create=true
+            ops4j.preHook=sampledb
+        </config>
+        <capability>
+            osgi.service;objectClass=javax.sql.DataSource;effective:=active;osgi.jndi.service.name=jdbc/sample
+        </capability>
+        <feature>${karaf-feature-name}</feature>
+        <feature>pax-jdbc-config</feature>
+    </feature>
+</features>

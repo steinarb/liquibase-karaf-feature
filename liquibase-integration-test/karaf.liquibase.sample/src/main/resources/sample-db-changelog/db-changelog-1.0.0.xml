@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- Copyright 2021 Steinar Bang                                                     -->
+    <!--                                                                                 -->
+    <!-- Licensed under the Apache License, Version 2.0 (the "License");                 -->
+    <!-- you may not use this file except in compliance with the License.                -->
+    <!-- You may obtain a copy of the License at                                         -->
+    <!--   http://www.apache.org/licenses/LICENSE-2.0                                    -->
+    <!-- Unless required by applicable law or agreed to in writing,                      -->
+    <!-- software distributed under the License is distributed on an "AS IS" BASIS,      -->
+    <!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.        -->
+    <!-- See the License for the specific language governing permissions and limitations -->
+    <!-- under the License.                                                              -->
+
+    <changeSet author="sb" id="sampleapp-1.0.0-accounts">
+        <preConditions onFail="CONTINUE" >
+            <not>
+                <tableExists tableName="sampleapp_accounts" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="sampleapp_accounts">
+            <column autoIncrement="true" name="account_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="account_primary_key"/>
+            </column>
+            <column name="username" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="sampleapp_accounts_id_index" tableName="sampleapp_accounts">
+            <column name="account_id"/>
+        </createIndex>
+
+        <createIndex indexName="ix_sampleapp_accounts_username" tableName="sampleapp_accounts">
+            <column name="username" type="VARCHAR(64)" />
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet author="sb" id="sampleapp-1.0.0-counter_increment_steps">
+        <preConditions onFail="CONTINUE" >
+            <not>
+                <tableExists tableName="counter_increment_steps" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="counter_increment_steps">
+            <column autoIncrement="true" name="increment_step_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="counter_increment_steps_primary_key"/>
+            </column>
+            <column name="account_id" type="INTEGER">
+                <constraints nullable="false" foreignKeyName="fk_counter_increment_steps_account" references="sampleapp_accounts(account_id)"/>
+            </column>
+            <column name="counter_increment_step" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addDefaultValue tableName="counter_increment_steps" columnName="counter_increment_step" defaultValueNumeric="1" columnDataType="INTEGER" />
+
+        <createIndex indexName="counter_increment_steps_id_index" tableName="counter_increment_steps">
+            <column name="increment_step_id"/>
+        </createIndex>
+
+        <createIndex indexName="ix_counter_increment_steps_account_id" tableName="counter_increment_steps">
+            <column name="account_id" type="INTEGER" />
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet author="sb" id="sampleapp-1.0.0-counters">
+        <preConditions onFail="CONTINUE" >
+            <not>
+                <tableExists tableName="counters" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="counters">
+            <column autoIncrement="true" name="count_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="counters_primary_key"/>
+            </column>
+            <column name="account_id" type="INTEGER">
+                <constraints nullable="false" foreignKeyName="fk_counters_account" references="sampleapp_accounts(account_id)"/>
+            </column>
+            <column name="counter" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addDefaultValue tableName="counters" columnName="counter" defaultValueNumeric="0" columnDataType="INTEGER" />
+
+        <createIndex indexName="counters_id_index" tableName="counters">
+            <column name="count_id"/>
+        </createIndex>
+
+        <createIndex indexName="ix_counters_account_id" tableName="counters">
+            <column name="account_id" type="INTEGER" />
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>
