@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Copyright 2017-2019 Steinar Bang                                                -->
+<!-- Copyright 2017-2022 Steinar Bang                                                -->
 <!--                                                                                 -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                 -->
 <!-- you may not use this file except in compliance with the License.                -->
@@ -15,6 +15,6 @@
     <feature name="liquibase-core" start-level="40" version="${liquibase.version}">
         <bundle>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
         <bundle>mvn:org.liquibase/liquibase-core/${liquibase.version}</bundle>
-        <bundle start-level="35">mvn:no.priv.bang.karaf/liquibase-slf4j-osgi/${project.version}</bundle>
+        <bundle start-level="35">mvn:com.mattbertolini/liquibase-slf4j/${liquibase-slf4j.version}</bundle>
     </feature>
 </features>
