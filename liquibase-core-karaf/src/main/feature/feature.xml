@@ -13,6 +13,7 @@
 
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
     <feature name="liquibase-core" start-level="40" version="${liquibase.version}">
+        <feature>spifly</feature>
         <bundle>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
         <bundle>mvn:org.liquibase/liquibase-core/${liquibase.version}</bundle>
         <bundle start-level="35">mvn:com.mattbertolini/liquibase-slf4j/${liquibase-slf4j.version}</bundle>
