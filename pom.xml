@@ -29,7 +29,6 @@
         <maven.bundle.plugin.version>5.1.6</maven.bundle.plugin.version>
         <karaf.version>4.4.0</karaf.version>
         <liquibase.version>${project.version}</liquibase.version>
-        <liquibase-slf4j.version>4.1.0</liquibase-slf4j.version>
         <snakeyaml.version>1.23</snakeyaml.version>
         <!-- versions of dependencies used in integration and unit tests -->
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
@@ -62,12 +61,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.mattbertolini</groupId>
-                <artifactId>liquibase-slf4j</artifactId>
-                <version>${liquibase-slf4j.version}</version>
-                <scope>provided</scope>
-            </dependency>
             <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>

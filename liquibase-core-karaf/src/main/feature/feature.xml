@@ -16,6 +16,5 @@
         <feature>spifly</feature>
         <bundle>mvn:org.yaml/snakeyaml/${snakeyaml.version}</bundle>
         <bundle>mvn:org.liquibase/liquibase-core/${liquibase.version}</bundle>
-        <bundle start-level="35">mvn:com.mattbertolini/liquibase-slf4j/${liquibase-slf4j.version}</bundle>
     </feature>
 </features>
