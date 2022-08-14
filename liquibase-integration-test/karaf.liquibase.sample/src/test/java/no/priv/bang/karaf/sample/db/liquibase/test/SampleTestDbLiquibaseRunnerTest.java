@@ -16,6 +16,7 @@
 package no.priv.bang.karaf.sample.db.liquibase.test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,9 @@ import java.util.Properties;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.ops4j.pax.jdbc.derby.impl.DerbyDataSourceFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.wiring.BundleWiring;
 import org.osgi.service.jdbc.DataSourceFactory;
 
 import no.priv.bang.osgi.service.mocks.logservice.MockLogService;
@@ -41,7 +45,13 @@ class SampleDbLiquibaseRunnerTest {
         MockLogService logservice = new MockLogService();
         SampleDbLiquibaseRunner runner = new SampleDbLiquibaseRunner();
         runner.setLogService(logservice);
-        runner.activate();
+        BundleWiring bundlewiring = mock(BundleWiring.class);
+        when(bundlewiring.getClassLoader()).thenReturn(getClass().getClassLoader());
+        Bundle bundle = mock(Bundle.class);
+        when(bundle.adapt(BundleWiring.class)).thenReturn(bundlewiring);
+        BundleContext bundlecontext = mock(BundleContext.class);
+        when(bundlecontext.getBundle()).thenReturn(bundle);
+        runner.activate(bundlecontext);
         runner.prepare(datasource);
         assertAccounts(datasource, 0);
         addAccounts(datasource);

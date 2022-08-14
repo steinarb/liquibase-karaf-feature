@@ -19,6 +19,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.ops4j.pax.jdbc.hook.PreHook;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,12 +31,13 @@ import liquibase.Liquibase;
 import liquibase.database.DatabaseConnection;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
+import liquibase.resource.OSGiResourceAccessor;
 
 @Component(immediate=true, property = "name=sampledb")
 public class SampleDbLiquibaseRunner implements PreHook {
 
     private Logger logger;
+    private Bundle bundle;
 
     @Reference
     public void setLogService(LogService logservice) {
@@ -42,8 +45,8 @@ public class SampleDbLiquibaseRunner implements PreHook {
     }
 
     @Activate
-    public void activate() {
-        // Called after all injections have been satisfied and before the PreHook service is exposed
+    public void activate(BundleContext bundlecontext) {
+        this.bundle = bundlecontext.getBundle();
     }
 
     @Override
@@ -58,7 +61,7 @@ public class SampleDbLiquibaseRunner implements PreHook {
 
     public void insertMockData(Connection connect) throws LiquibaseException {
         DatabaseConnection databaseConnection = new JdbcConnection(connect);
-        var resourceAccessor = new ClassLoaderResourceAccessor(getClass().getClassLoader());
+        var resourceAccessor = new OSGiResourceAccessor(bundle);
         Liquibase liquibase = new Liquibase("sql/data/db-changelog.xml", resourceAccessor, databaseConnection);
         liquibase.update("");
     }
@@ -70,7 +73,7 @@ public class SampleDbLiquibaseRunner implements PreHook {
 
     private Liquibase createLiquibaseInstance(Connection connection, String changelistClasspathResource) throws LiquibaseException {
         DatabaseConnection databaseConnection = new JdbcConnection(connection);
-        var resourceAccessor = new ClassLoaderResourceAccessor(getClass().getClassLoader());
+        var resourceAccessor = new OSGiResourceAccessor(bundle);
         return new Liquibase(changelistClasspathResource, resourceAccessor, databaseConnection);
     }
 
