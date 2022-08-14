@@ -111,15 +111,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.felix</groupId>
-                            <artifactId>maven-bundle-plugin</artifactId>
-                            <version>${maven.bundle.plugin.version}</version>
-                            <type>maven-plugin</type>
-                        </dependency>
-                    </dependencies>
-                    <extensions>true</extensions>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
