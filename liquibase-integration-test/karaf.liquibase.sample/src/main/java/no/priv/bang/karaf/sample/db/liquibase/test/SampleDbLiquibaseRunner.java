@@ -53,22 +53,29 @@ public class SampleDbLiquibaseRunner implements PreHook {
     public void prepare(DataSource datasource) throws SQLException {
         try (Connection connection = datasource.getConnection()) {
             applyLiquibaseChangelist(connection, "sample-db-changelog/db-changelog-1.0.0.xml");
-            insertMockData(connection);
         } catch (LiquibaseException e) {
             logger.error("Error creating sampleapp test database schema", e);
+        }
+
+        try (Connection connection = datasource.getConnection()) {
+            insertMockData(connection);
+        } catch (LiquibaseException e) {
+            logger.error("Error creating sampleapp test database mock data", e);
         }
     }
 
     public void insertMockData(Connection connect) throws LiquibaseException {
         DatabaseConnection databaseConnection = new JdbcConnection(connect);
         var resourceAccessor = new OSGiResourceAccessor(bundle);
-        Liquibase liquibase = new Liquibase("sql/data/db-changelog.xml", resourceAccessor, databaseConnection);
-        liquibase.update("");
+        try(Liquibase liquibase = new Liquibase("sql/data/db-changelog.xml", resourceAccessor, databaseConnection)) {
+            liquibase.update("");
+        }
     }
 
     private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws LiquibaseException {
-        Liquibase liquibase = createLiquibaseInstance(connection, changelistClasspathResource);
-        liquibase.update("");
+        try(Liquibase liquibase = createLiquibaseInstance(connection, changelistClasspathResource)) {
+            liquibase.update("");
+        }
     }
 
     private Liquibase createLiquibaseInstance(Connection connection, String changelistClasspathResource) throws LiquibaseException {
