@@ -58,8 +58,8 @@ public class SampleDbLiquibaseRunner implements PreHook {
 
     public void insertMockData(Connection connect) throws LiquibaseException {
         DatabaseConnection databaseConnection = new JdbcConnection(connect);
-        ClassLoaderResourceAccessor classLoaderResourceAccessor = new ClassLoaderResourceAccessor(getClass().getClassLoader());
-        Liquibase liquibase = new Liquibase("sql/data/db-changelog.xml", classLoaderResourceAccessor, databaseConnection);
+        var resourceAccessor = new ClassLoaderResourceAccessor(getClass().getClassLoader());
+        Liquibase liquibase = new Liquibase("sql/data/db-changelog.xml", resourceAccessor, databaseConnection);
         liquibase.update("");
     }
 
@@ -70,8 +70,8 @@ public class SampleDbLiquibaseRunner implements PreHook {
 
     private Liquibase createLiquibaseInstance(Connection connection, String changelistClasspathResource) throws LiquibaseException {
         DatabaseConnection databaseConnection = new JdbcConnection(connection);
-        ClassLoaderResourceAccessor classLoaderResourceAccessor = new ClassLoaderResourceAccessor(getClass().getClassLoader());
-        return new Liquibase(changelistClasspathResource, classLoaderResourceAccessor, databaseConnection);
+        var resourceAccessor = new ClassLoaderResourceAccessor(getClass().getClassLoader());
+        return new Liquibase(changelistClasspathResource, resourceAccessor, databaseConnection);
     }
 
 }
