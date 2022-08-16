@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2022 Steinar Bang                                                     -->
+<!--                                                                                 -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                 -->
+<!-- you may not use this file except in compliance with the License.                -->
+<!-- You may obtain a copy of the License at                                         -->
+<!--   http://www.apache.org/licenses/LICENSE-2.0                                    -->
+<!-- Unless required by applicable law or agreed to in writing,                      -->
+<!-- software distributed under the License is distributed on an "AS IS" BASIS,      -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.        -->
+<!-- See the License for the specific language governing permissions and limitations -->
+<!-- under the License.                                                              -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>no.priv.bang.karaf</groupId>
+        <artifactId>liquibase-karaf-feature</artifactId>
+        <version>3.8.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>liquibase-bom</artifactId>
+    <packaging>pom</packaging>
+
+    <name>liquibase karaf feature BOM</name>
+    <description>A Bill Of Materials pom setting the versions of the liquibase-core feature and the liquibase-core jar.</description>
+    <url>https://github.com/steinarb/liquibase-karaf-feature</url>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>no.priv.bang.karaf</groupId>
+                <artifactId>liquibase-core-karaf</artifactId>
+                <version>${project.version}</version>
+                <type>xml</type>
+                <classifier>features</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

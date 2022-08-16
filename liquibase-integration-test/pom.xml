@@ -31,8 +31,16 @@
         <module>karaf.liquibase.tests</module>
     </modules>
 
+
+
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+                <scope>provided</scope>
+            </dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>

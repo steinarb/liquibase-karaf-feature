@@ -20,7 +20,7 @@
 
     <packaging>pom</packaging>
 
-    <name>liquibase-core karaf feature</name>
+    <name>liquibase-core karaf feature parent</name>
     <description>An apache karaf feature for the liquibase RDMBS schema management, including slf4j logging.</description>
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
@@ -41,6 +41,7 @@
 
     <modules>
         <module>liquibase-core-karaf</module>
+        <module>liquibase-bom</module>
         <module>liquibase-integration-test</module>
     </modules>
 
@@ -58,17 +59,6 @@
             <email>sb@dod.no</email>
         </developer>
     </developers>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-core</artifactId>
-                <version>${liquibase.version}</version>
-                <scope>provided</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <pluginManagement>
