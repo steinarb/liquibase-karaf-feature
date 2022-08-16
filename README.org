@@ -103,36 +103,95 @@ The liquibase-sample has a minimal OSGi component that loads and creates a schem
 
 The liquibase-sample application can also be used to verify that the liquibase logs are redirected to the karaf logs.
 
-** Notes on the liquibase logging issues
+** Notes for upgrading from liquibase 3.x to 4.x
 
-The liquibase logger can be replaced if liquibase finds an implementation of the [[http://www.liquibase.org/javadoc/liquibase/logging/Logger.html][Logger]] interface in the package "liquibase.ext.logger" (or a sub-package of this package).  The requirements to replace the liquibase logger are outlined in the article [[http://www.bennybottema.com/2013/12/29/fixing-liquibase-logging-in-spring/][Fixing liquibase logging (in Spring) with SLF4J and Log4J]].
+Liquibase 4 is built internally with an inversion-control architecture, and uses [[[https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ServiceLoader.html][java.util.ServiceLoader]] to find the implementations of its services.
 
-There already is a solution that uses the approach outlined in the article to replace the liquibase logger with [[https://www.slf4j.org][slf4j]]. This solution is called [[https://github.com/mattbertolini/liquibase-slf4j][liquibase-slf4j]], and for a non-OSGi program using slf4j, it is enough to add a maven dependency to liquibase-slf4j.
+The ServiceLoader doesn't work well with OSGi. The ServiceLoader expects a single, flat, classloader, and a single thread, and this is not what OSGi has.
 
-Using liquibase-slf4j won't work out of the box with karaf:
- 1. liquibase-slf4j isn't an OSGi bundle
- 2. Even if liquibase-slf4j is made into an OSGi bundle (e.g. by using the wrap protocol in karaf to load the maven dependency), the classloader won't find the replacement logger
+It is possible to make the ServiceLoader work in OSGi, [[https://blog.osgi.org/2013/02/javautilserviceloader-in-osgi.html][using the Service Loader Mediator]]. 
 
-[[http://karaf.922171.n3.nabble.com/Experiences-with-karaf-and-liquibase-tp4050470p4050471.html][This message on the karaf mailing list]] outlines the necessary approach:
- 1. Make the liquibase-slf4j into an [[https://www.ibm.com/support/knowledgecenter/was_beta_devtools/com.ibm.websphere.wdt.doc/topics/cbundlefragment.htm][OSGi fragment]] instead of an OSGi bundle
- 2. Attach the liquibase-slf4j OSGi fragment to the liquibase-core bundle
+A [[https://en.wikipedia.org/wiki/OSGi_Specification_Implementations#Implementations#133:_Service_Loader_Mediator_Specification][single implementation of the service loader mediator exists]]: [[https://aries.apache.org/documentation/modules/spi-fly.html][Apache Aries SPI Fly]].
 
-This approach effectively makes the liquibase-slf4j contents part of the liquibase-core bundle, and the liquibase classpath scanner will find the replacement logger.
+The liquibase karaf feature created from this project will load SPI Fly at the same start-level as the liquibase-core bundle.
 
-*** Feature uninstallment issue with the liquibase-slf4j fragment bundle
+But to make liquibase usage work, the bundle that instanciates the Liquibase classes and loads and parses the changelog files, needs to do two things:
+ 1. Add a Require-Capabilities header that requires all capabilities provided by the liquibase-core bundle
+ 2. Extract the XSD file(s) for the changelog schema version(s) used and add them to the bundle doing the parsing
 
-With karaf 4.1.1 (verified on both Windows 7 and debian GNU/linux, Java 1.8 both places), running the following command will shut down karaf:
-#+BEGIN_EXAMPLE
-  feature:uninstall liquibase-core
-#+END_EXAMPLE
-
-With karaf 4.0.9 and karaf 4.0.7, uninstalling the liquibase-core doesn't crash karaf.
-
-If liquibase-slf4j is removed from the "liquibase-core" feature, then uninstalling the feature won't crash karaf.  So the problem is related to differences in logging from karaf 4.0.9 and 4.1.1.
-
-This has been reported as karaf bug [[https://issues.apache.org/jira/browse/KARAF-5174][file:https://img.shields.io/jira/issue/https/issues.apache.org/jira/KARAF-5174.svg]].
-
-This issue is verified fixed in karaf 4.1.2-SNAPSHOT.
+#+begin_src xml
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
+      <build>
+          <plugins>
+              <plugin>
+                  <groupId>org.apache.felix</groupId>
+                  <artifactId>maven-bundle-plugin</artifactId>
+                  <version>5.1.8</version>
+                  <configuration>
+                      <instructions>
+                          <Require-Capability>
+                              osgi.extender; filter:="(osgi.extender=osgi.serviceloader.processor)",
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.serializer.ChangeLogSerializer)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.parser.NamespaceDetails)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.database.Database)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.change.Change)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.database.DatabaseConnection)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.precondition.Precondition)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.serializer.SnapshotSerializer)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.configuration.AutoloadedConfigurations)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.diff.DiffGenerator)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.lockservice.LockService)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.changelog.ChangeLogHistoryService)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.datatype.LiquibaseDataType)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.configuration.ConfigurationValueProvider)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.logging.LogService)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.snapshot.SnapshotGenerator)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.parser.ChangeLogParser)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.servicelocator.ServiceLocator)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.diff.compare.DatabaseObjectComparator)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.command.LiquibaseCommand)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.license.LicenseService)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.diff.output.changelog.ChangeGenerator)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.executor.Executor)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.structure.DatabaseObject)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.parser.SnapshotParser)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.hub.HubService)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.command.CommandStep)"; cardinality:=multiple,
+                              osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.sqlgenerator.SqlGenerator)"; cardinality:=multiple
+                          </Require-Capability>
+                          <Include-Resource>
+                              /=target/classes/,
+                              /www.liquibase.org/=target/dependency/www.liquibase.org/
+                          </Include-Resource>
+                      </instructions>
+                  </configuration>
+              </plugin>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-dependency-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <id>copy-liquibase-xsd</id>
+                          <phase>validate</phase>
+                          <goals>
+                              <goal>unpack</goal>
+                          </goals>
+                          <configuration>
+                              <artifactItems>
+                                  <artifactItem>
+                                      <groupId>org.liquibase</groupId>
+                                      <artifactId>liquibase-core</artifactId>
+                                  </artifactItem>
+                              </artifactItems>
+                              <includes>**/dbchangelog-3.5.xsd</includes>
+                          </configuration>
+                      </execution>
+                  </executions>
+              </plugin>
+          </plugins>
+      </build>
+  </project>
+#+end_src
 
 * License
 
