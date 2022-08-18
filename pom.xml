@@ -26,7 +26,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.bundle.plugin.version>5.1.6</maven.bundle.plugin.version>
+        <maven.bundle.plugin.version>5.1.8</maven.bundle.plugin.version>
         <karaf.version>4.4.0</karaf.version>
         <liquibase.version>${project.version}</liquibase.version>
         <snakeyaml.version>1.23</snakeyaml.version>
