@@ -1,6 +1,6 @@
 * A Karaf feature for liquibase-core
 
-/NOTE! Version 4.15.0 is the first release of the liquibase karaf feature in nearly three years/ See [[Notes for upgrading from liquibase 3.x to 4.x]] if you come from version 3.8.0 of this feature.
+/NOTE! Version 4.15.0 is the first release of the liquibase karaf feature in nearly three years/ See [[Using liquibase from OSGi bundles]] if you come from version 3.8.0 of this feature, for changes that need to be made.
 
 This project contains a [[https://karaf.apache.org/manual/latest/provisioning][karaf feature]] for easily using [[https://en.wikipedia.org/wiki/Liquibase][Liquibase]] from OSGi-based applications running in [[http://karaf.apache.org][apache karaf]].
 
@@ -102,7 +102,7 @@ The liquibase-sample has a minimal OSGi component that loads and creates a schem
 
 The liquibase-sample application can also be used to verify that the liquibase logs are redirected to the karaf logs.
 
-** Notes for upgrading from liquibase 3.x to 4.x
+** Using liquibase from OSGi bundles
 
 Liquibase 4 is built internally with an inversion-control architecture, and uses [[[https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ServiceLoader.html][java.util.ServiceLoader]] to find the implementations of its services.
 
@@ -114,9 +114,9 @@ A [[https://en.wikipedia.org/wiki/OSGi_Specification_Implementations#Implementat
 
 The liquibase karaf feature created from this project will load SPI Fly at the same start-level as the liquibase-core bundle.
 
-But to make liquibase usage work, the bundle that instanciates the Liquibase classes and loads and parses the changelog files, needs to do two things:
- 1. Add a Require-Capabilities header that requires all capabilities provided by the liquibase-core bundle
- 2. Extract the XSD file(s) for the changelog schema version(s) used and add them to the bundle doing the parsing
+But to make liquibase usage work, the bundles that instanciates the Liquibase classes and loads and parses the changelog files, needs to do two things:
+ 1. Add a Require-Capabilities header that requires all capabilities provided by the liquibase-core bundle (this must be done for all bundles that need to instantiate Liquibase classes)
+ 2. Extract the XSD file(s) for the changelog schema version(s) used and add them to the bundle doing the parsing (this must be done for all bundles XML files are loaded from)
 
 #+begin_src xml
   <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
@@ -190,6 +190,13 @@ But to make liquibase usage work, the bundle that instanciates the Liquibase cla
           </plugins>
       </build>
   </project>
+#+end_src
+
+In the above example only dbchangelog-3.5 is copied. If a different schema version is used, that version must be copied instead.
+
+To copy all schemas, change includes to this (Disclaimer: not tested):
+#+begin_src xml
+  <includes>**/*.xsd</includes>
 #+end_src
 
 * License
