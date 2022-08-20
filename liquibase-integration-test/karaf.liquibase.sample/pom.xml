@@ -17,7 +17,7 @@
     <parent>
         <groupId>no.priv.bang.karaf</groupId>
         <artifactId>liquibase-integration-test</artifactId>
-        <version>4.15.0</version>
+        <version>4.16.0-SNAPSHOT</version>
     </parent>
     <artifactId>karaf.liquibase.sample</artifactId>
 
@@ -193,8 +193,4 @@
             </plugin>
         </plugins>
     </build>
-
-  <scm>
-    <tag>liquibase-karaf-feature-4.15.0</tag>
-  </scm>
 </project>
