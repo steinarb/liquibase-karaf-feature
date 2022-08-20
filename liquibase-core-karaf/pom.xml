@@ -17,7 +17,7 @@
     <parent>
         <groupId>no.priv.bang.karaf</groupId>
         <artifactId>liquibase-karaf-feature</artifactId>
-        <version>3.8.1-SNAPSHOT</version>
+        <version>4.15.0</version>
     </parent>
 
     <artifactId>liquibase-core-karaf</artifactId>
