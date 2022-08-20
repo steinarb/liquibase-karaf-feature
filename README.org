@@ -1,5 +1,7 @@
 * A Karaf feature for liquibase-core
 
+/NOTE! Version 4.15.0 is the first release of the liquibase karaf feature in nearly three years/ See [[Notes for upgrading from liquibase 3.x to 4.x]] if you come from version 3.8.0 of this feature.
+
 This project contains a [[https://karaf.apache.org/manual/latest/provisioning][karaf feature]] for easily using [[https://en.wikipedia.org/wiki/Liquibase][Liquibase]] from OSGi-based applications running in [[http://karaf.apache.org][apache karaf]].
 
 If you haven't yet encountered it: liquibase is a really smooth solution for handling your RDBMS schemas.  Smooth initial startup, and smooth evolution of schemas (adding columns, adding tables, dropping columns and dropping tables).
@@ -13,12 +15,9 @@ From a karaf user standpoint, liquibase has one major quirk and annoyance: the l
 
 *** Release history
 
-/Note/: The versions 3.8.1 through 3.10.0 aren't proper OSGi bundles, so I haven't created karaf features for these versions.
-
-Version 3.10.1 and 4.0.0 /are/ OSGi bundles and I will create karaf features for these versions.
-
 | Date                   | Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+---------+-------------------+-------------------------+--------------------------------------------------------------|
+| <2022-08-20 Sat 19:27> |  4.15.0 |            4.15.0 |                         | First liquibase 4.x release of the feature                   |
 | <2019-11-18 Mon 21:25> |   3.8.0 |             3.8.0 |                   2.0.0 |                                                              |
 | <2019-11-18 Mon 20:42> |   3.7.0 |             3.7.0 |                   2.0.0 | Use snakeyaml 1.23                                           |
 | <2019-11-18 Mon 19:33> |   3.6.3 |             3.6.3 |                   2.0.0 |                                                              |
@@ -49,7 +48,7 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
-    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/3.8.0/xml/features</repository>
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.15.0/xml/features</repository>
     <feature name="ukelonn-db-liquibase">
         <feature>liquibase-core</feature>
     </feature>
@@ -63,7 +62,7 @@ If you generate your karaf feature repository using the karaf-maven-plugin, you 
   <dependency>
       <groupId>no.priv.bang.karaf</groupId>
       <artifactId>liquibase-core-karaf</artifactId>
-      <version>3.8.0</version>
+      <version>4.15.0</version>
       <type>xml</type>
       <classifier>features</classifier>
   </dependency>
