@@ -8,8 +8,6 @@ If you haven't yet encountered it: liquibase is a really smooth solution for han
 
 Liquibase does the same job as ad-hoc delta script solutions, but liquibase does the job in a clean and robust way, tested and refined over the 11 years of its existence.
 
-From a karaf user standpoint, liquibase has one major quirk and annoyance: the liquibase logging (as in "logging of errors and messages", not as in "database schema changelogs") floods the karaf console.  This karaf feature aims to fix that, by putting the liquibase logging messages into the regular karaf log (using [[https://github.com/mattbertolini/liquibase-slf4j][liquibase-slf4j]] to reroute the logging).
-
 ** Project status
 [[https://maven-badges.herokuapp.com/maven-central/no.priv.bang.karaf/liquibase-core-karaf][file:https://maven-badges.herokuapp.com/maven-central/no.priv.bang.karaf/liquibase-core-karaf/badge.svg]]
 
