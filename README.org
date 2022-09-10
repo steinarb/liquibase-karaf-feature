@@ -8,6 +8,8 @@ If you haven't yet encountered it: liquibase is a really smooth solution for han
 
 Liquibase does the same job as ad-hoc delta script solutions, but liquibase does the job in a clean and robust way, tested and refined over the 11 years of its existence.
 
+Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] but in a different way that fits my programmer's mind better. And liquibase is cross-database capable, i.e. done right it's possible to write schema migrations in ways that will make them work on all databases with a JDBC driver.
+
 ** Project status
 [[https://maven-badges.herokuapp.com/maven-central/no.priv.bang.karaf/liquibase-core-karaf][file:https://maven-badges.herokuapp.com/maven-central/no.priv.bang.karaf/liquibase-core-karaf/badge.svg]]
 
