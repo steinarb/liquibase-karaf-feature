@@ -32,7 +32,7 @@
         <karaf.version>4.4.2</karaf.version>
         <snakeyaml.version>1.23</snakeyaml.version>
         <!-- versions of dependencies used in integration and unit tests -->
-        <junit.jupiter.version>5.9.0</junit.jupiter.version>
+        <junit.jupiter.version>5.9.1</junit.jupiter.version>
         <mockito.version>4.6.1</mockito.version>
         <assertj.version>3.23.1</assertj.version>
         <osgi-service-adapters.version>1.2.0</osgi-service-adapters.version>
