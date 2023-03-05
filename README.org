@@ -17,7 +17,8 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 
 | Date                   | Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+---------+-------------------+-------------------------+--------------------------------------------------------------|
-| <2022-10-30 Sun 15:48> |  4.17.1 |            4.15.1 |                         |                                                              |
+|                        |  4.19.0 |            4.19.0 |                         |                                                              |
+| <2022-10-30 Sun 15:48> |  4.17.1 |            4.17.1 |                         |                                                              |
 | <2022-08-20 Sat 19:27> |  4.15.0 |            4.15.0 |                         | First liquibase 4.x release of the feature                   |
 | <2019-11-18 Mon 21:25> |   3.8.0 |             3.8.0 |                   2.0.0 |                                                              |
 | <2019-11-18 Mon 20:42> |   3.7.0 |             3.7.0 |                   2.0.0 | Use snakeyaml 1.23                                           |
@@ -49,7 +50,7 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
-    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.17.1/xml/features</repository>
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.19.0/xml/features</repository>
     <feature name="ukelonn-db-liquibase">
         <feature>liquibase-core</feature>
     </feature>
@@ -63,7 +64,7 @@ If you generate your karaf feature repository using the karaf-maven-plugin, you 
   <dependency>
       <groupId>no.priv.bang.karaf</groupId>
       <artifactId>liquibase-core-karaf</artifactId>
-      <version>4.17.1</version>
+      <version>4.19.0</version>
       <type>xml</type>
       <classifier>features</classifier>
   </dependency>
@@ -109,7 +110,7 @@ Liquibase 4 is built internally with an inversion-of-control architecture, and u
 
 The ServiceLoader doesn't work well with OSGi. The ServiceLoader expects a single, flat, classloader, and a single thread, and this is not what OSGi has.
 
-It is possible to make the ServiceLoader work in OSGi, [[https://blog.osgi.org/2013/02/javautilserviceloader-in-osgi.html][using the Service Loader Mediator]]. 
+It is possible to make the ServiceLoader work in OSGi, [[https://blog.osgi.org/2013/02/javautilserviceloader-in-osgi.html][using the Service Loader Mediator]].
 
 A [[https://en.wikipedia.org/wiki/OSGi_Specification_Implementations#Implementations#133:_Service_Loader_Mediator_Specification][single implementation of the service loader mediator exists]]: [[https://aries.apache.org/documentation/modules/spi-fly.html][Apache Aries SPI Fly]].
 
@@ -202,12 +203,12 @@ To copy all schemas, change includes to this (Disclaimer: not tested):
 
 ** Current problems under OSGi
 Apart from the issues worked around in the previous section I see two problems currently:
- 1. I think JSON parsers and YAML parsers may not work in the current (4.17.1) version, based on these messages in karaf.log
+ 1. I think JSON parsers and YAML parsers may not work in the current (4.19.0) version, based on these messages in karaf.log
     #+begin_example
-      2022-10-30T11:09:18,242 | INFO  | features-3-thread-1 | servicelocator                   | 167 - org.liquibase.core - 4.17.1 | Cannot load service: liquibase.parser.ChangeLogParser: liquibase.parser.core.json.JsonChangeLogParser Unable to get public no-arg constructor
-      2022-10-30T11:09:18,249 | INFO  | features-3-thread-1 | servicelocator                   | 167 - org.liquibase.core - 4.17.1 | Cannot load service: liquibase.parser.ChangeLogParser: liquibase.parser.core.yaml.YamlChangeLogParser Unable to get public no-arg constructor
-      2022-10-30T11:09:18,344 | INFO  | features-3-thread-1 | servicelocator                   | 167 - org.liquibase.core - 4.17.1 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
-      2022-10-30T11:09:18,346 | INFO  | features-3-thread-1 | servicelocator                   | 167 - org.liquibase.core - 4.17.1 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
+      2023-03-05T21:04:56,192 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.parser.ChangeLogParser: liquibase.parser.core.json.JsonChangeLogParser Unable to get public no-arg constructor
+      2023-03-05T21:04:56,200 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.parser.ChangeLogParser: liquibase.parser.core.yaml.YamlChangeLogParser Unable to get public no-arg constructor
+      2023-03-05T21:04:56,299 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
+      2023-03-05T21:04:56,300 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
     #+end_example
  2. I sometimes see messages like the one below in the karaf.log. I think the problems causing the messages may be caused by multiple threads interfering with each other and may be this liquibase issue: https://github.com/liquibase/liquibase/issues/2248
     #+begin_example
