@@ -261,6 +261,38 @@ Apart from the issues worked around in the previous section I see two problems c
               at liquibase.Liquibase.runInScope(Liquibase.java:2414) ~[?:?]
               ... 38 more
     #+end_example
+** Testing and debugging in karaf
+If the integration test fails in the schema setup, I haven't yet found a way to debug in the integration test itself.
+
+But it is possible to start a karaf process locally, attach an IDE to that karaf process for remote debugging, and then load the same feature as the integration tests.
+
+The procedure, is:
+ 1. [[https://karaf.apache.org/get-started][Download a tar-ball or zip file from the newest binary release, and unpack it]]
+ 2. cd into the unpacked karaf distro, and start karaf in debug mode:
+    #+begin_example
+      ./bin/karaf debug
+    #+end_example
+ 3. In the IDE create a remote debug configuration attaching to localhost port 5005 and start the debug configuration
+ 4. Also in the IDE, set a breakpoint where you want the debugger to stop (for me it's a point in my own code that occurs in the stack trace I'm trying to debug)
+ 5. Load the same karaf feature as the integration test
+    #+begin_example
+      feature:repo-add mvn:no.priv.bang.karaf/karaf.liquibase.sample.datasource.receiver/LATEST/xml/features
+      feature:install karaf-liquibase-sample-datasource-receiver
+    #+end_example
+ 6. The IDE will stop on the breakpoint in the debugger and it's possible to step into the release
+ 7. If you want to restart:
+    1. Disconnect the debugger
+    2. Stop karaf with Ctrl-D in the console
+    3. delete the data directory in karaf:
+       #+begin_example
+         rm -rf data
+       #+end_example
+    4. Start karaf again in debug mode
+       #+begin_example
+         ./bin/karaf debug
+       #+end_example
+    5. Start a remote debug session from the IDE
+    6. Use arrow up in the karaf console to rerun the feature:repo-add and feature:install commands for the feature
 * License
 
 This maven project is licensed with the [[https://www.apache.org/licenses/LICENSE-2.0][Apache v 2.0 license]].
