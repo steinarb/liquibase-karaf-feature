@@ -30,6 +30,12 @@
     <dependencies>
         <dependency>
             <groupId>no.priv.bang.karaf</groupId>
+            <artifactId>karaf.liquibase.sample.services</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.priv.bang.karaf</groupId>
             <artifactId>karaf.liquibase.sample.datasource.receiver</artifactId>
             <version>${project.version}</version>
             <classifier>features</classifier>

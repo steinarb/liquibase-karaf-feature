@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Steinar Bang
+ * Copyright 2022-2023 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,11 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
+
+import no.priv.bang.karaf.liquibase.sample.services.Account;
+import no.priv.bang.karaf.liquibase.sample.services.SampleLiquibaseDatasourceReceiverService;
+
+import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
 
@@ -50,6 +55,11 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
     @Test
     public void testLoadFeature() throws Exception { // NOSONAR this test has an assert, just not an assert sonar recognizes
         installAndAssertFeature("karaf-liquibase-sample-datasource-receiver");
+        var service = getOsgiService(SampleLiquibaseDatasourceReceiverService.class);
+        assertEquals(0, service.accounts().size());
+        var newAccount = Account.with().username("jad").build();
+        var accountsAfterAdd = service.addAccount(newAccount);
+        assertEquals(1, accountsAfterAdd.size());
     }
 
 }
