@@ -92,7 +92,6 @@
                     <executions>
                         <execution>
                             <id>generate-features-file</id>
-                            <phase>package</phase>
                             <goals>
                                 <goal>features-generate-descriptor</goal>
                             </goals>
