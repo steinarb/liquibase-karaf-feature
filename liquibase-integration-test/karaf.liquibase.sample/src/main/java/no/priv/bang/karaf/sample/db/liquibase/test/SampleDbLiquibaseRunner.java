@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Steinar Bang
+ * Copyright 2022-2023 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@ package no.priv.bang.karaf.sample.db.liquibase.test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Map;
+
 import javax.sql.DataSource;
 import org.ops4j.pax.jdbc.hook.PreHook;
 import org.osgi.framework.Bundle;
@@ -27,10 +29,16 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.log.LogService;
 import org.osgi.service.log.Logger;
 
-import liquibase.Liquibase;
-import liquibase.database.DatabaseConnection;
+import liquibase.Scope;
+import liquibase.Scope.ScopedRunner;
+import liquibase.ThreadLocalScopeManager;
+import liquibase.changelog.ChangeLogParameters;
+import liquibase.command.CommandScope;
+import liquibase.command.core.UpdateCommandStep;
+import liquibase.command.core.helpers.DatabaseChangelogCommandStep;
+import liquibase.command.core.helpers.DbUrlConnectionCommandStep;
+import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
 import liquibase.resource.OSGiResourceAccessor;
 
 @Component(immediate=true, property = "name=sampledb")
@@ -46,6 +54,7 @@ public class SampleDbLiquibaseRunner implements PreHook {
 
     @Activate
     public void activate(BundleContext bundlecontext) {
+        Scope.setScopeManager(new ThreadLocalScopeManager());
         this.bundle = bundlecontext.getBundle();
     }
 
@@ -53,35 +62,41 @@ public class SampleDbLiquibaseRunner implements PreHook {
     public void prepare(DataSource datasource) throws SQLException {
         try (Connection connection = datasource.getConnection()) {
             applyLiquibaseChangelist(connection, "sample-db-changelog/db-changelog-1.0.0.xml");
-        } catch (LiquibaseException e) {
+        } catch (Exception e) {
             logger.error("Error creating sampleapp test database schema", e);
         }
 
         try (Connection connection = datasource.getConnection()) {
             insertMockData(connection);
-        } catch (LiquibaseException e) {
+        } catch (Exception e) {
             logger.error("Error creating sampleapp test database mock data", e);
         }
     }
 
-    public void insertMockData(Connection connect) throws LiquibaseException {
-        DatabaseConnection databaseConnection = new JdbcConnection(connect);
-        var resourceAccessor = new OSGiResourceAccessor(bundle);
-        try(Liquibase liquibase = new Liquibase("sql/data/db-changelog.xml", resourceAccessor, databaseConnection)) {
-            liquibase.update("");
-        }
+    public void insertMockData(Connection connect) throws Exception {
+        var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connect));
+        Map<String, Object> scopeObjects = Map.of(
+            Scope.Attr.database.name(), database,
+            Scope.Attr.resourceAccessor.name(), new OSGiResourceAccessor(bundle));
+
+        Scope.child(scopeObjects, (ScopedRunner<?>) () -> new CommandScope("update")
+                    .addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database)
+                    .addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, "sql/data/db-changelog.xml")
+                    .addArgumentValue(DatabaseChangelogCommandStep.CHANGELOG_PARAMETERS, new ChangeLogParameters(database))
+                    .execute());
     }
 
-    private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws LiquibaseException {
-        try(Liquibase liquibase = createLiquibaseInstance(connection, changelistClasspathResource)) {
-            liquibase.update("");
-        }
-    }
+    private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws Exception {
+        var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+        Map<String, Object> scopeObjects = Map.of(
+            Scope.Attr.database.name(), database,
+            Scope.Attr.resourceAccessor.name(), new OSGiResourceAccessor(bundle));
 
-    private Liquibase createLiquibaseInstance(Connection connection, String changelistClasspathResource) throws LiquibaseException {
-        DatabaseConnection databaseConnection = new JdbcConnection(connection);
-        var resourceAccessor = new OSGiResourceAccessor(bundle);
-        return new Liquibase(changelistClasspathResource, resourceAccessor, databaseConnection);
+        Scope.child(scopeObjects, (ScopedRunner<?>) () -> new CommandScope("update")
+                    .addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database)
+                    .addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, changelistClasspathResource)
+                    .addArgumentValue(DatabaseChangelogCommandStep.CHANGELOG_PARAMETERS, new ChangeLogParameters(database))
+                    .execute());
     }
 
 }
