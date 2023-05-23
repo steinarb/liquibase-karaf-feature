@@ -26,11 +26,11 @@
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
     <properties>
-        <liquibase.version>4.19.0</liquibase.version>
+        <liquibase.version>4.22.0</liquibase.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.bundle.plugin.version>5.1.8</maven.bundle.plugin.version>
         <karaf.version>4.4.3</karaf.version>
-        <snakeyaml.version>1.23</snakeyaml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
         <!-- versions of dependencies used in integration and unit tests -->
         <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <mockito.version>5.1.1</mockito.version>
