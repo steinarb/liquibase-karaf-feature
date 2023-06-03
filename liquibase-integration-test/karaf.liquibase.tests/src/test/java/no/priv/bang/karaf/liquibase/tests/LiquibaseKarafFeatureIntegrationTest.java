@@ -56,10 +56,16 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
     public void testLoadFeature() throws Exception { // NOSONAR this test has an assert, just not an assert sonar recognizes
         installAndAssertFeature("karaf-liquibase-sample-datasource-receiver");
         var service = getOsgiService(SampleLiquibaseDatasourceReceiverService.class);
-        assertEquals(1, service.accounts().size());
+        var initialAccounts = service.accounts();
+        assertEquals(1, initialAccounts.size());
+        var initialAccount = initialAccounts.get(0);
+        assertEquals("jod", initialAccount.getUsername());
         var newAccount = Account.with().username("jad").build();
         var accountsAfterAdd = service.addAccount(newAccount);
         assertEquals(2, accountsAfterAdd.size());
+        var addedAccount = accountsAfterAdd.get(1);
+        assertEquals(initialAccount.getId() + 1, addedAccount.getId());
+        assertEquals("jad", addedAccount.getUsername());
     }
 
 }
