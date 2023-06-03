@@ -53,9 +53,9 @@ class SampleDbLiquibaseRunnerTest {
         when(bundlecontext.getBundle()).thenReturn(bundle);
         runner.activate(bundlecontext);
         runner.prepare(datasource);
-        assertAccounts(datasource, 0);
-        addAccounts(datasource);
         assertAccounts(datasource, 1);
+        addAccounts(datasource);
+        assertAccounts(datasource, 2);
         addCounterIncrementSteps(datasource);
         assertCounterIncrementSteps(datasource);
         addCounters(datasource);
