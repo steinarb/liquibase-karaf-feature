@@ -12,6 +12,7 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 
 ** Project status
 [[https://maven-badges.herokuapp.com/maven-central/no.priv.bang.karaf/liquibase-core-karaf][file:https://maven-badges.herokuapp.com/maven-central/no.priv.bang.karaf/liquibase-core-karaf/badge.svg]]
+[[https://github.com/steinarb/liquibase-karaf-feature/actions/workflows/liquibase-karaf-feature-maven-ci-build.yml][file:https://github.com/steinarb/liquibase-karaf-feature/actions/workflows/liquibase-karaf-feature-maven-ci-build.yml/badge.svg]]
 
 *** Release history
 
