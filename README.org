@@ -211,57 +211,93 @@ Apart from the issues worked around in the previous section I see two problems c
       2023-03-05T21:04:56,299 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
       2023-03-05T21:04:56,300 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
     #+end_example
- 2. I sometimes see messages like the one below in the karaf.log. I think the problems causing the messages may be caused by multiple threads interfering with each other and may be this liquibase issue: https://github.com/liquibase/liquibase/issues/2248
+ 2. Starting with liquibase 4.19.1 and fixed in 4.21.0 using liquibase in OSGi failed with the error message
+    #+begin_example
+      java.lang.NullPointerException: Cannot invoke "liquibase.logging.mdc.MdcManager.put(String, String)" because the return value of "liquibase.Scope.getMdcManager()" is null at liquibase.Scope.addMdcValue(Scope.java:416)
+    #+end_example
+    This was reported as https://github.com/liquibase/liquibase/issues/3910
+ 3. Starting with version 4.21.0 the Liquibase facade stopped working for me.  To avoid messages like this:
     #+begin_example
       2022-09-10T13:47:54,302 | ERROR | CM Configuration Updater (ManagedServiceFactory Update: factoryPid=[org.ops4j.datasource]) | HandleregProductionDbLiquibaseRunner | 125 - no.priv.bang.handlereg.db.liquibase.production - 1.0.0.SNAPSHOT | Failed to create handlereg derby test database
       liquibase.exception.LiquibaseException: java.lang.RuntimeException: Cannot end scope cpkebkpkfa when currently at scope bbldyrztji
               at liquibase.Liquibase.runInScope(Liquibase.java:2419) ~[?:?]
               at liquibase.Liquibase.update(Liquibase.java:209) ~[?:?]
               at liquibase.Liquibase.update(Liquibase.java:195) ~[?:?]
-              at liquibase.Liquibase.update(Liquibase.java:191) ~[?:?]
-              at liquibase.Liquibase.update(Liquibase.java:183) ~[?:?]
-              at no.priv.bang.handlereg.db.liquibase.HandleregLiquibase.applyLiquibaseChangelist(HandleregLiquibase.java:42) ~[?:?]
-              at no.priv.bang.handlereg.db.liquibase.HandleregLiquibase.createInitialSchema(HandleregLiquibase.java:28) ~[?:?]
-              at no.priv.bang.handlereg.db.liquibase.production.HandleregProductionDbLiquibaseRunner.prepare(HandleregProductionDbLiquibaseRunner.java:55) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.DataSourceRegistration.<init>(DataSourceRegistration.java:88) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.DataSourceConfigManager.lambda$null$4(DataSourceConfigManager.java:95) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper$1.addingService(ServiceTrackerHelper.java:132) ~[?:?]
-              at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:943) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:871) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:321) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:264) ~[osgi.core-8.0.0.jar:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper.track(ServiceTrackerHelper.java:141) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.DataSourceConfigManager.lambda$null$5(DataSourceConfigManager.java:91) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper$1.addingService(ServiceTrackerHelper.java:132) ~[?:?]
-              at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:943) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:871) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:321) ~[osgi.core-8.0.0.jar:?]
-              at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:264) ~[osgi.core-8.0.0.jar:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper.track(ServiceTrackerHelper.java:141) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper.track(ServiceTrackerHelper.java:86) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.DataSourceConfigManager.lambda$updated$6(DataSourceConfigManager.java:90) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper.track(ServiceTrackerHelper.java:147) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.ServiceTrackerHelper.track(ServiceTrackerHelper.java:86) ~[?:?]
-              at org.ops4j.pax.jdbc.config.impl.DataSourceConfigManager.updated(DataSourceConfigManager.java:89) ~[?:?]
-              at org.apache.felix.cm.impl.helper.ManagedServiceFactoryTracker.updated(ManagedServiceFactoryTracker.java:159) ~[?:?]
-              at org.apache.felix.cm.impl.helper.ManagedServiceFactoryTracker.provideConfiguration(ManagedServiceFactoryTracker.java:93) ~[?:?]
-              at org.apache.felix.cm.impl.ConfigurationManager$ManagedServiceFactoryUpdate.provide(ConfigurationManager.java:1264) ~[?:?]
-              at org.apache.felix.cm.impl.ConfigurationManager$ManagedServiceFactoryUpdate.run(ConfigurationManager.java:1208) ~[?:?]
-              at org.apache.felix.cm.impl.UpdateThread.run0(UpdateThread.java:122) ~[?:?]
-              at org.apache.felix.cm.impl.UpdateThread.run(UpdateThread.java:84) ~[?:?]
-              at java.lang.Thread.run(Thread.java:829) ~[?:?]
-      Caused by: java.lang.RuntimeException: Cannot end scope cpkebkpkfa when currently at scope bbldyrztji
-              at liquibase.Scope.exit(Scope.java:230) ~[?:?]
-              at liquibase.Scope.child(Scope.java:191) ~[?:?]
-              at liquibase.Scope.child(Scope.java:179) ~[?:?]
-              at liquibase.Scope.child(Scope.java:158) ~[?:?]
-              at liquibase.Liquibase.runInScope(Liquibase.java:2414) ~[?:?]
-              ... 38 more
+              ...
     #+end_example
+    the Liquibase facade has to be replaced with ScopeRunner using ThreadLocalScopeManager.
+    I.e. something like this
+    #+begin_src java
+      @Component(immediate=true, property = "name=sampledb")
+      public class SampleDbLiquibaseRunner implements PreHook {
+
+          private Bundle bundle;
+
+          @Activate
+          public void activate(BundleContext bundlecontext) {
+              this.bundle = bundlecontext.getBundle();
+          }
+
+          @Override
+          public void prepare(DataSource datasource) throws SQLException {
+              try (Connection connection = datasource.getConnection()) {
+                  applyLiquibaseChangelist(connection, "sample-db-changelog/db-changelog-1.0.0.xml");
+              } catch (LiquibaseException e) {
+                  throw new RuntimeException("Error creating sampleapp test database schema", e);
+              }
+          }
+
+          private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws LiquibaseException {
+              try(Liquibase liquibase = createLiquibaseInstance(connection, changelistClasspathResource)) {
+                  liquibase.update("");
+              }
+          }
+
+          private Liquibase createLiquibaseInstance(Connection connection, String changelistClasspathResource) throws LiquibaseException {
+              DatabaseConnection databaseConnection = new JdbcConnection(connection);
+              var resourceAccessor = new OSGiResourceAccessor(bundle);
+              return new Liquibase(changelistClasspathResource, resourceAccessor, databaseConnection);
+          }
+
+      }
+    #+end_src
+    has to be replaced with something like this:
+    #+begin_src java
+      @Component(immediate=true, property = "name=sampledb")
+      public class SampleDbLiquibaseRunner implements PreHook {
+
+          private Bundle bundle;
+
+          @Activate
+          public void activate(BundleContext bundlecontext) {
+              Scope.setScopeManager(new ThreadLocalScopeManager());
+              this.bundle = bundlecontext.getBundle();
+          }
+
+          @Override
+          public void prepare(DataSource datasource) throws SQLException {
+              try (Connection connection = datasource.getConnection()) {
+                  applyLiquibaseChangelist(connection, "sample-db-changelog/db-changelog-1.0.0.xml");
+              } catch (Exception e) {
+                  throw new RuntimeException("Error creating sampleapp test database schema", e);
+              }
+          }
+
+          private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws Exception {
+              var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+              Map<String, Object> scopeObjects = Map.of(
+                  Scope.Attr.database.name(), database,
+                  Scope.Attr.resourceAccessor.name(), new OSGiResourceAccessor(bundle));
+
+              Scope.child(scopeObjects, (ScopedRunner<?>) () -> new CommandScope("update")
+                          .addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database)
+                          .addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, changelistClasspathResource)
+                          .addArgumentValue(DatabaseChangelogCommandStep.CHANGELOG_PARAMETERS, new ChangeLogParameters(database))
+                          .execute());
+          }
+
+      }
+    #+end_src
 ** Testing and debugging in karaf
 If the integration test fails in the schema setup, I haven't yet found a way to debug in the integration test itself.
 
