@@ -204,12 +204,10 @@ To copy all schemas, change includes to this (Disclaimer: not tested):
 
 ** Current problems under OSGi
 Apart from the issues worked around in the previous section I see two problems currently:
- 1. I think JSON parsers and YAML parsers may not work in the current (4.19.0) version, based on these messages in karaf.log
+ 1. I think JSON parsers and YAML parsers may not work in the current (4.22.0) version, based on these messages in karaf.log
     #+begin_example
-      2023-03-05T21:04:56,192 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.parser.ChangeLogParser: liquibase.parser.core.json.JsonChangeLogParser Unable to get public no-arg constructor
-      2023-03-05T21:04:56,200 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.parser.ChangeLogParser: liquibase.parser.core.yaml.YamlChangeLogParser Unable to get public no-arg constructor
-      2023-03-05T21:04:56,299 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
-      2023-03-05T21:04:56,300 | INFO  | features-3-thread-1 | servicelocator                   | 166 - org.liquibase.core - 4.19.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
+      2023-06-24T12:30:57,881 | INFO  | features-3-thread-1 | servicelocator                   | 93 - org.liquibase.core - 4.22.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
+      2023-06-24T12:30:57,881 | INFO  | features-3-thread-1 | servicelocator                   | 93 - org.liquibase.core - 4.22.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
     #+end_example
  2. Starting with liquibase 4.19.1 and fixed in 4.21.0 using liquibase in OSGi failed with the error message
     #+begin_example
