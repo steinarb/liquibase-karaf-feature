@@ -16,6 +16,11 @@
 package no.priv.bang.karaf.liquibase.sample.services;
 
 public class Account {
+    @Override
+    public String toString() {
+        return "Account [id=" + id + ", username=" + username + "]";
+    }
+
     private int id;
     private String username;
 
