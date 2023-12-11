@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @RunWith(PaxExam.class)
@@ -63,7 +64,12 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
         var newAccount = Account.with().username("jad").build();
         var accountsAfterAdd = service.addAccount(newAccount);
         assertEquals(2, accountsAfterAdd.size());
-        var addedAccount = accountsAfterAdd.get(1);
+        Account addedAccount = null;
+        for (var a : accountsAfterAdd) {
+            if ("jad".equals(a.getUsername())) {
+                addedAccount = a;
+            }
+        }
         assertEquals(initialAccount.getId() + 1, addedAccount.getId());
         assertEquals("jad", addedAccount.getUsername());
     }
