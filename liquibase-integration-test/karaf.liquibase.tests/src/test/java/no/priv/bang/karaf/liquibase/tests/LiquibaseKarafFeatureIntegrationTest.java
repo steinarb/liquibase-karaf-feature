@@ -53,7 +53,7 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
     }
 
     @Test
-    public void testLoadFeature() throws Exception { // NOSONAR this test has an assert, just not an assert sonar recognizes
+    public void testLoadFeature() throws Exception {
         installAndAssertFeature("karaf-liquibase-sample-datasource-receiver");
         var service = getOsgiService(SampleLiquibaseDatasourceReceiverService.class);
         var initialAccounts = service.accounts();
