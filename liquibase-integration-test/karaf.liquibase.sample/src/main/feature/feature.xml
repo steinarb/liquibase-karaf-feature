@@ -15,12 +15,13 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="sampleapp.db.liquibase.test">
     <feature name="${karaf-feature-name}">
         <feature>scr</feature>
+        <feature>pax-jdbc-derby</feature>
     </feature>
     <feature name="sample-db" description="sample test DataSource" version="${project.version}">
         <config name="org.ops4j.datasource-sample">
-            osgi.jdbc.driver.name=H2 JDBC Driver
+            osgi.jdbc.driver.name=derby
             dataSourceName=jdbc/sample
-            url=jdbc:h2:./sample
+            url=jdbc:derby:memory:sample;create=true
             ops4j.preHook=sampledb
         </config>
         <capability>
