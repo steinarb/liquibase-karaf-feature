@@ -32,7 +32,6 @@ import static org.junit.Assert.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 @RunWith(PaxExam.class)
