@@ -18,6 +18,7 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 
 | Date                   | Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+---------+-------------------+-------------------------+--------------------------------------------------------------|
+| <2023-12-11 Mon 22:33> |  4.24.0 |            4.24.0 |                         |                                                              |
 | <2023-12-11 Mon 22:23> |  4.23.2 |            4.23.2 |                         |                                                              |
 | <2023-12-11 Mon 21:07> |  4.25.0 |            4.23.1 |                         | Mistaken release! Sorry!                                     |
 | <2023-12-11 Mon 20:44> |  4.23.1 |            4.23.1 |                         | Integration test had to replace derby with h2                |
@@ -44,7 +45,7 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 To install this feature:
  1. start karaf and give the following commands to the karaf console:
     #+BEGIN_EXAMPLE
-      feature:repo-add mvn:no.priv.bang.karaf/liquibase-core-karaf/4.23.2/xml/features
+      feature:repo-add mvn:no.priv.bang.karaf/liquibase-core-karaf/4.24.0/xml/features
       feature:install liquibase-core
     #+END_EXAMPLE
 
@@ -55,7 +56,7 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
-    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.23.2/xml/features</repository>
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.24.0/xml/features</repository>
     <feature name="ukelonn-db-liquibase">
         <feature>liquibase-core</feature>
     </feature>
@@ -69,7 +70,7 @@ If you generate your karaf feature repository using the karaf-maven-plugin, you 
   <dependency>
       <groupId>no.priv.bang.karaf</groupId>
       <artifactId>liquibase-core-karaf</artifactId>
-      <version>4.23.2</version>
+      <version>4.24.0</version>
       <type>xml</type>
       <classifier>features</classifier>
   </dependency>
@@ -210,8 +211,8 @@ To copy all schemas, change includes to this (Disclaimer: not tested):
 Apart from the issues worked around in the previous section I see the following problems:
  1. These messages are still present:
     #+begin_example
-      2023-12-11T21:07:02,846 | INFO  | CM Configuration Updater (ManagedServiceFactory Update: factoryPid=[org.ops4j.datasource]) | servicelocator                   | 93 - org.liquibase.core - 4.23.2 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
-      2023-12-11T21:07:02,846 | INFO  | CM Configuration Updater (ManagedServiceFactory Update: factoryPid=[org.ops4j.datasource]) | servicelocator                   | 93 - org.liquibase.core - 4.23.2 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
+      2023-12-12T07:45:21,915 | INFO  | features-3-thread-1 | servicelocator                   | 93 - org.liquibase.core - 4.24.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadDataChange Unable to get public no-arg constructor
+      2023-12-12T07:45:21,916 | INFO  | features-3-thread-1 | servicelocator                   | 93 - org.liquibase.core - 4.24.0 | Cannot load service: liquibase.change.Change: liquibase.change.core.LoadUpdateDataChange Unable to get public no-arg constructor
     #+end_example
  2. Starting with liquibase 4.19.1 and fixed in 4.21.0 using liquibase in OSGi failed with the error message
     #+begin_example
