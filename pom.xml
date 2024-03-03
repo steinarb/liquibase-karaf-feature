@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2017-2023 Steinar Bang                                     -->
+<!-- Copyright 2017-2024 Steinar Bang                                     -->
 <!--                                                                      -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");      -->
 <!-- you may not use this file except in compliance with the License.     -->
@@ -17,7 +17,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.priv.bang.karaf</groupId>
     <artifactId>liquibase-karaf-feature</artifactId>
-    <version>4.24.1-SNAPSHOT</version>
+    <version>4.26.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -26,7 +26,7 @@
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
     <properties>
-        <liquibase.version>4.24.0</liquibase.version>
+        <liquibase.version>4.26.0</liquibase.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
         <karaf.version>4.4.5</karaf.version>
