@@ -25,7 +25,7 @@
     <packaging>pom</packaging>
 
     <name>liquibase-core karaf feature</name>
-    <description>An apache karaf feature for the liquibase RDMBS schema management, including slf4j logging.</description>
+    <description>An apache karaf feature for the liquibase RDMBS schema management.</description>
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
     <properties>
