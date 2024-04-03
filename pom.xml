@@ -31,6 +31,7 @@
         <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
         <karaf.version>4.4.5</karaf.version>
         <snakeyaml.version>2.2</snakeyaml.version>
+        <spifly.dynamic.bundle.version>1.3.6</spifly.dynamic.bundle.version>
         <!-- versions of dependencies used in integration and unit tests -->
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
         <mockito.version>5.10.0</mockito.version>
