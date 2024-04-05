@@ -35,9 +35,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.aries.spifly</groupId>
@@ -64,6 +64,7 @@
                 <configuration>
                     <includeProjectArtifact>false</includeProjectArtifact>
                     <startLevel>${liquibase-core.start.level}</startLevel>
+                    <includeTransitiveDependency>true</includeTransitiveDependency>
                 </configuration>
             </plugin>
         </plugins>
