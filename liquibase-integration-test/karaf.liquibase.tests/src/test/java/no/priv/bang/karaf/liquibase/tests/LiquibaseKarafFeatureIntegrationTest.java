@@ -43,7 +43,7 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
         final MavenArtifactUrlReference sampleappFeatureRepo = maven()
             .groupId("no.priv.bang.karaf")
             .artifactId("karaf.liquibase.sample.datasource.receiver")
-            .versionAsInProject()
+            .version("LATEST")
             .type("xml")
             .classifier("features");
         Option[] options = new Option[] {
