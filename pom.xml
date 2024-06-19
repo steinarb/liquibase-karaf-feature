@@ -44,6 +44,7 @@
     <modules>
         <module>liquibase-core-karaf</module>
         <module>liquibase-bom</module>
+        <module>liquibase-libraries</module>
         <module>liquibase-integration-test</module>
     </modules>
 

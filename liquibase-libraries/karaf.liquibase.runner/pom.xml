@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2024 Steinar Bang                                          -->
+<!--                                                                      -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");      -->
+<!-- you may not use this file except in compliance with the License.     -->
+<!-- You may obtain a copy of the License at                              -->
+<!--   http://www.apache.org/licenses/LICENSE-2.0                         -->
+<!-- Unless required by applicable law or agreed to in writing,           -->
+<!-- software distributed under the License is distributed on an "AS IS", -->
+<!-- BASIS WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express   -->
+<!-- or implied.                                                          -->
+<!-- See the License for the specific language governing permissions and  -->
+<!-- limitations under the License.                                       -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xml:space="preserve">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>no.priv.bang.karaf</groupId>
+        <artifactId>liquibase-libraries</artifactId>
+        <version>4.27.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>karaf.liquibase.runner</artifactId>
+
+    <name>Liqubase class path changelist runner</name>
+    <description>Base class for classes running changelists loaded from the classpath</description>
+
+    <properties>
+        <karaf-feature-name>liquibase-runner</karaf-feature-name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>no.priv.bang.karaf</groupId>
+            <artifactId>liquibase-core-karaf</artifactId>
+            <version>${project.version}</version>
+            <type>xml</type>
+            <classifier>features</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.jdbc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.priv.bang.osgi.service.adapters</groupId>
+            <artifactId>service-mocks</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc-config</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc-pool-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.jdbc</groupId>
+            <artifactId>pax-jdbc-derby</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Import-Package>
+                            org.osgi.service.log;version="[1.4,2)",
+                            *
+                        </Import-Package>
+                        <Require-Capability>
+                            osgi.extender; filter:="(osgi.extender=osgi.serviceloader.processor)",
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.serializer.ChangeLogSerializer)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.parser.NamespaceDetails)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.database.Database)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.change.Change)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.database.DatabaseConnection)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.precondition.Precondition)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.serializer.SnapshotSerializer)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.configuration.AutoloadedConfigurations)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.diff.DiffGenerator)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.lockservice.LockService)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.changelog.ChangeLogHistoryService)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.datatype.LiquibaseDataType)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.configuration.ConfigurationValueProvider)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.logging.LogService)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.snapshot.SnapshotGenerator)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.parser.ChangeLogParser)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.servicelocator.ServiceLocator)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.diff.compare.DatabaseObjectComparator)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.command.LiquibaseCommand)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.license.LicenseService)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.diff.output.changelog.ChangeGenerator)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.executor.Executor)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.structure.DatabaseObject)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.parser.SnapshotParser)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.hub.HubService)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.command.CommandStep)"; cardinality:=multiple,
+                            osgi.serviceloader; filter:="(osgi.serviceloader=liquibase.sqlgenerator.SqlGenerator)"; cardinality:=multiple
+                        </Require-Capability>
+                        <Include-Resource>
+                            /=target/classes/,
+                            /www.liquibase.org/=target/dependency/www.liquibase.org/
+                        </Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-liquibase-xsd</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.liquibase</groupId>
+                                    <artifactId>liquibase-core</artifactId>
+                                </artifactItem>
+                            </artifactItems>
+                            <includes>**/dbchangelog-3.5.xsd</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.karaf.tooling</groupId>
+                                        <artifactId>karaf-maven-plugin</artifactId>
+                                        <versionRange>[4.4.3,)</versionRange>
+                                        <goals>
+                                            <goal>features-generate-descriptor</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[3.3.0,)</versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

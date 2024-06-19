@@ -42,6 +42,18 @@
                 <artifactId>liquibase-core</artifactId>
                 <version>${liquibase.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.priv.bang.karaf</groupId>
+                <artifactId>karaf.liquibase.runner</artifactId>
+                <version>${project.version}</version>
+                <type>xml</type>
+                <classifier>features</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.priv.bang.karaf</groupId>
+                <artifactId>karaf.liquibase.runner</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
