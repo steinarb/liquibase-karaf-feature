@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Steinar Bang
+ * Copyright 2022-2024 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,8 @@ package no.priv.bang.karaf.sample.db.liquibase.test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Map;
-
 import javax.sql.DataSource;
 import org.ops4j.pax.jdbc.hook.PreHook;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -30,22 +27,13 @@ import org.osgi.service.log.LogService;
 import org.osgi.service.log.Logger;
 
 import liquibase.Scope;
-import liquibase.Scope.ScopedRunner;
 import liquibase.ThreadLocalScopeManager;
-import liquibase.changelog.ChangeLogParameters;
-import liquibase.command.CommandScope;
-import liquibase.command.core.UpdateCommandStep;
-import liquibase.command.core.helpers.DatabaseChangelogCommandStep;
-import liquibase.command.core.helpers.DbUrlConnectionCommandStep;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.resource.OSGiResourceAccessor;
+import no.priv.bang.karaf.liquibase.runner.LiquibaseClassPathChangeLogRunner;
 
 @Component(immediate=true, property = "name=sampledb")
-public class SampleDbLiquibaseRunner implements PreHook {
+public class SampleDbLiquibaseRunner extends LiquibaseClassPathChangeLogRunner implements PreHook {
 
     private Logger logger;
-    private Bundle bundle;
 
     @Reference
     public void setLogService(LogService logservice) {
@@ -55,7 +43,7 @@ public class SampleDbLiquibaseRunner implements PreHook {
     @Activate
     public void activate(BundleContext bundlecontext) {
         Scope.setScopeManager(new ThreadLocalScopeManager());
-        this.bundle = bundlecontext.getBundle();
+        bundlecontext.getBundle();
     }
 
     @Override
@@ -74,29 +62,11 @@ public class SampleDbLiquibaseRunner implements PreHook {
     }
 
     public void insertMockData(Connection connect) throws Exception {
-        var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connect));
-        Map<String, Object> scopeObjects = Map.of(
-            Scope.Attr.database.name(), database,
-            Scope.Attr.resourceAccessor.name(), new OSGiResourceAccessor(bundle));
-
-        Scope.child(scopeObjects, (ScopedRunner<?>) () -> new CommandScope("update")
-                    .addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database)
-                    .addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, "sql/data/db-changelog.xml")
-                    .addArgumentValue(DatabaseChangelogCommandStep.CHANGELOG_PARAMETERS, new ChangeLogParameters(database))
-                    .execute());
+        applyLiquibaseChangelist(connect, "sql/data/db-changelog.xml");
     }
 
     private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws Exception {
-        var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-        Map<String, Object> scopeObjects = Map.of(
-            Scope.Attr.database.name(), database,
-            Scope.Attr.resourceAccessor.name(), new OSGiResourceAccessor(bundle));
-
-        Scope.child(scopeObjects, (ScopedRunner<?>) () -> new CommandScope("update")
-                    .addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database)
-                    .addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, changelistClasspathResource)
-                    .addArgumentValue(DatabaseChangelogCommandStep.CHANGELOG_PARAMETERS, new ChangeLogParameters(database))
-                    .execute());
+        applyLiquibaseChangelist(connection, changelistClasspathResource, getClass().getClassLoader());
     }
 
 }
