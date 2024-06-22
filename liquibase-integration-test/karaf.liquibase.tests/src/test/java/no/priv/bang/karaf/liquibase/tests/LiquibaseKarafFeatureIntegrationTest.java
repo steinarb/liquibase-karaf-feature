@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Steinar Bang
+ * Copyright 2022-2024 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
@@ -40,13 +39,13 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
 
     @Configuration
     public Option[] config() {
-        final MavenArtifactUrlReference sampleappFeatureRepo = maven()
+        final var sampleappFeatureRepo = maven()
             .groupId("no.priv.bang.karaf")
             .artifactId("karaf.liquibase.sample.datasource.receiver")
             .version("LATEST")
             .type("xml")
             .classifier("features");
-        Option[] options = new Option[] {
+        var options = new Option[] {
             features(sampleappFeatureRepo)
         };
         return Stream.of(super.config(), options).flatMap(Stream::of).toArray(Option[]::new);
@@ -63,7 +62,7 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
         var newAccount = Account.with().username("jad").build();
         var accountsAfterAdd = service.addAccount(newAccount);
         assertEquals(2, accountsAfterAdd.size());
-        Account addedAccount = accountsAfterAdd.get(0);
+        var addedAccount = accountsAfterAdd.get(0);
         assertEquals(initialAccount.getId() + 1, addedAccount.getId());
         assertEquals("jad", addedAccount.getUsername());
     }
