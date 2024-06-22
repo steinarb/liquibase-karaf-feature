@@ -58,13 +58,13 @@ public class LiquibaseKarafFeatureIntegrationTest extends KarafTestSupport {
         var initialAccounts = service.accounts();
         assertEquals(1, initialAccounts.size());
         var initialAccount = initialAccounts.get(0);
-        assertEquals("jod", initialAccount.getUsername());
+        assertEquals("jod", initialAccount.username());
         var newAccount = Account.with().username("jad").build();
         var accountsAfterAdd = service.addAccount(newAccount);
         assertEquals(2, accountsAfterAdd.size());
         var addedAccount = accountsAfterAdd.get(0);
-        assertEquals(initialAccount.getId() + 1, addedAccount.getId());
-        assertEquals("jad", addedAccount.getUsername());
+        assertEquals(initialAccount.id() + 1, addedAccount.id());
+        assertEquals("jad", addedAccount.username());
     }
 
 }

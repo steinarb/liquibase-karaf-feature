@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Steinar Bang
+ * Copyright 2023-2024 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,7 @@
  */
 package no.priv.bang.karaf.liquibase.sample.services;
 
-public class Account {
-    @Override
-    public String toString() {
-        return "Account [id=" + id + ", username=" + username + "]";
-    }
-
-    private int id;
-    private String username;
-
-    public int getId() {
-        return id;
-    }
-    public String getUsername() {
-        return username;
-    }
+public record Account(int id, String username) {
 
     public static Builder with() {
         return new Builder();
@@ -40,10 +26,7 @@ public class Account {
         private String username;
 
         public Account build() {
-            var account = new Account();
-            account.id = this.id;
-            account.username = this.username;
-            return account;
+            return new Account(id, username);
         }
 
         public Builder id(int id) {

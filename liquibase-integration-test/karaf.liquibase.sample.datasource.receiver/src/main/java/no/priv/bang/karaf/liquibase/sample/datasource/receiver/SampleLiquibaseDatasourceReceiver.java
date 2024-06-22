@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 Steinar Bang
+ * Copyright 2022-2024 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class SampleLiquibaseDatasourceReceiver implements SampleLiquibaseDatasou
         try (var connection = datasource.getConnection()) {
             var sql = "insert into sampleapp_accounts (username) values (?)";
             try(var statement = connection.prepareStatement(sql)) {
-                statement.setString(1, account.getUsername());
+                statement.setString(1, account.username());
                 statement.execute();
             }
         }
