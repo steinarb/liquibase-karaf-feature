@@ -48,13 +48,13 @@ public class SampleDbLiquibaseRunner extends LiquibaseClassPathChangeLogRunner i
 
     @Override
     public void prepare(DataSource datasource) throws SQLException {
-        try (Connection connection = datasource.getConnection()) {
+        try (var connection = datasource.getConnection()) {
             applyLiquibaseChangelist(connection, "sample-db-changelog/db-changelog-1.0.0.xml");
         } catch (Exception e) {
             logger.error("Error creating sampleapp test database schema", e);
         }
 
-        try (Connection connection = datasource.getConnection()) {
+        try (var connection = datasource.getConnection()) {
             insertMockData(connection);
         } catch (Exception e) {
             logger.error("Error creating sampleapp test database mock data", e);
