@@ -139,10 +139,6 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Import-Package>
-                            org.osgi.service.log;version="[1.4,2)",
-                            *
-                        </Import-Package>
                         <Include-Resource>
                             /=target/classes/,
                             /www.liquibase.org/=target/dependency/www.liquibase.org/
