@@ -30,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
         <karaf.version>4.4.6</karaf.version>
-        <spifly.dynamic.bundle.version>1.3.7</spifly.dynamic.bundle.version>
+        <spifly.dynamic.bundle.version>1.3.6</spifly.dynamic.bundle.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <!-- versions of dependencies used in integration and unit tests -->
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
