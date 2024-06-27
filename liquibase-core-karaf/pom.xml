@@ -40,11 +40,6 @@
             <version>${commons-beanutils.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.aries.spifly</groupId>
-            <artifactId>org.apache.aries.spifly.dynamic.bundle</artifactId>
-            <version>${spifly.dynamic.bundle.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
