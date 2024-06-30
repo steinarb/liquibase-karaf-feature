@@ -247,34 +247,39 @@ Apart from the issues worked around in the previous section I see the following 
       @Component(immediate=true, property = "name=sampledb")
       public class SampleDbLiquibaseRunner implements PreHook {
 
-          private Bundle bundle;
-
           @Activate
           public void activate(BundleContext bundlecontext) {
               Scope.setScopeManager(new ThreadLocalScopeManager());
-              this.bundle = bundlecontext.getBundle();
           }
 
           @Override
           public void prepare(DataSource datasource) throws SQLException {
-              try (Connection connection = datasource.getConnection()) {
+              try (var connection = datasource.getConnection()) {
                   applyLiquibaseChangelist(connection, "sample-db-changelog/db-changelog-1.0.0.xml");
               } catch (Exception e) {
                   throw new RuntimeException("Error creating sampleapp test database schema", e);
               }
           }
 
-          private void applyLiquibaseChangelist(Connection connection, String changelistClasspathResource) throws Exception {
-              var database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-              Map<String, Object> scopeObjects = Map.of(
-                  Scope.Attr.database.name(), database,
-                  Scope.Attr.resourceAccessor.name(), new OSGiResourceAccessor(bundle));
+          private void applyLiquibaseChangelist(Connection connect, String liquibaseChangeLogClassPathResource) throws Exception, DatabaseException {
+              applyLiquibaseChangelist(connect, liquibaseChangeLogClassPathResource, getClass().getClassLoader());
+          }
 
-              Scope.child(scopeObjects, (ScopedRunner<?>) () -> new CommandScope("update")
-                          .addArgumentValue(DbUrlConnectionCommandStep.DATABASE_ARG, database)
-                          .addArgumentValue(UpdateCommandStep.CHANGELOG_FILE_ARG, changelistClasspathResource)
-                          .addArgumentValue(DatabaseChangelogCommandStep.CHANGELOG_PARAMETERS, new ChangeLogParameters(database))
-                          .execute());
+          public void applyLiquibaseChangelist(Connection connect, String liquibaseChangeLogClassPathResource, ClassLoader classLoader) throws Exception {
+              try (var database = findCorrectDatabaseImplementation(connect)) {
+                  Scope.child(scopeObjectsWithClassPathResourceAccessor(classLoader), () -> new CommandScope(UPDATE)
+                              .addArgumentValue(DATABASE_ARG, database)
+                              .addArgumentValue(CHANGELOG_FILE_ARG, liquibaseChangeLogClassPathResource)
+                              .execute());
+              }
+          }
+
+          private Database findCorrectDatabaseImplementation(Connection connect) throws DatabaseException {
+              return DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connect));
+          }
+
+          private Map<String, Object> scopeObjectsWithClassPathResourceAccessor(ClassLoader classLoader) {
+              return Map.of(resourceAccessor.name(), new ClassLoaderResourceAccessor(classLoader));
           }
 
       }
