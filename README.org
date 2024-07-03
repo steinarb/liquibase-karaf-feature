@@ -18,6 +18,7 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 
 | Date                   | Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+---------+-------------------+-------------------------+--------------------------------------------------------------|
+| <2024-07-03 Wed 21:33> |  4.28.0 |            4.28.0 |                         | Adds new liquibase-runner library                            |
 | <2024-04-05 Fri 22:27> |  4.27.0 |            4.27.0 |                         |                                                              |
 | <2023-12-11 Mon 22:33> |  4.24.0 |            4.24.0 |                         |                                                              |
 | <2023-12-12 Tue 22:33> |  4.23.2 |            4.23.2 |                         |                                                              |
@@ -46,7 +47,7 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 To install this feature:
  1. start karaf and give the following commands to the karaf console:
     #+BEGIN_EXAMPLE
-      feature:repo-add mvn:no.priv.bang.karaf/liquibase-core-karaf/4.27.0/xml/features
+      feature:repo-add mvn:no.priv.bang.karaf/liquibase-core-karaf/4.28.0/xml/features
       feature:install liquibase-core
     #+END_EXAMPLE
 
@@ -57,7 +58,7 @@ To use liquibase from your own, manually edited, karaf feature, include the feat
 #+BEGIN_SRC xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
-    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.27.0/xml/features</repository>
+    <repository>mvn:no.priv.bang.karaf/liquibase-core-karaf/4.28.0/xml/features</repository>
     <feature name="ukelonn-db-liquibase">
         <feature>liquibase-core</feature>
     </feature>
@@ -71,7 +72,7 @@ If you generate your karaf feature repository using the karaf-maven-plugin, you 
   <dependency>
       <groupId>no.priv.bang.karaf</groupId>
       <artifactId>liquibase-core-karaf</artifactId>
-      <version>4.27.0</version>
+      <version>4.28.0</version>
       <type>xml</type>
       <classifier>features</classifier>
   </dependency>
