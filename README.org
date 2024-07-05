@@ -18,7 +18,7 @@ Liquibase does pretty much the same thing as [[https://flywaydb.org][flyway]] bu
 
 | Date                   |  Version | Liquibase version | Liquibase slf4j version | Comment                                                      |
 |------------------------+----------+-------------------+-------------------------+--------------------------------------------------------------|
-| <2024-07-03 Wed 22:07> | 4.28.0.1 |            4.28.0 |                         | Bugfix for 4.28.0 release                                    |
+| <2024-07-03 Wed 22:07> | 4.28.0.1 |            4.28.0 |                         | Bugfix for 4.28.0 see also [[Current problems under OSGi]]       |
 | <2024-07-03 Wed 21:33> |   4.28.0 |            4.28.0 |                         | Adds new liquibase-runner library                            |
 | <2024-04-05 Fri 22:27> |   4.27.0 |            4.27.0 |                         |                                                              |
 | <2023-12-11 Mon 22:33> |   4.24.0 |            4.24.0 |                         |                                                              |
@@ -194,12 +194,30 @@ To copy all schemas, change includes to this (Disclaimer: not tested):
 
 ** Current problems under OSGi
 Apart from the issues worked around in the previous section I see the following problems:
- 1. Starting with liquibase 4.19.1 and fixed in 4.21.0 using liquibase in OSGi failed with the error message
+ 1. liquibase 4.28.0 is missing an SPI service start (https://github.com/liquibase/liquibase/issues/6040 ) so to use 4.28.0 under OSGi it is neccessary to manually start the missing service, like e.g so:
+    #+begin_src java
+      public class SomeClass {
+
+          public CommandResults applyLiquibaseChangelist(Connection connect, String changelistClasspathResource, ClassLoader classLoader) throws LiquibaseException {
+              try (var database = findCorrectDatabaseImplementation(connect)) {
+                  createAndRegisterValidatingVisitorGeneratorIfItIsMissing();
+                  return Scope.child(scopeObjectsWithClassPathResourceAccessor(classLoader), () -> ...);
+              }
+          }
+
+          private void createAndRegisterValidatingVisitorGeneratorIfItIsMissing() {
+              var factory = Scope.getCurrentScope().getSingleton(ValidatingVisitorGeneratorFactory.class);
+              ofNullable(factory.getValidatingVisitorGenerator()).ifPresentOrElse(v -> {}, () -> factory.register(new StandardValidatingVisitorGenerator()));
+          }
+      }
+    #+end_src
+    (/Note/: the [[https://github.com/steinarb/liquibase-karaf-feature/blob/master/liquibase-libraries/karaf.liquibase.runner/src/main/java/no/priv/bang/karaf/liquibase/runner/LiquibaseClassPathChangeLogRunner.java#L42C14-L42C47][LiquibaseClassPathChangeLogRunner]] new with the 4.28.0.1 of liquibase-karaf-feature [[https://github.com/steinarb/liquibase-karaf-feature/blob/master/liquibase-libraries/karaf.liquibase.runner/src/main/java/no/priv/bang/karaf/liquibase/runner/LiquibaseClassPathChangeLogRunner.java#L42C14-L42C47][implements this workaround]] (which will be removed once the issue is fixed in a liquibase release))
+ 2. Starting with liquibase 4.19.1 and fixed in 4.21.0 using liquibase in OSGi failed with the error message
     #+begin_example
       java.lang.NullPointerException: Cannot invoke "liquibase.logging.mdc.MdcManager.put(String, String)" because the return value of "liquibase.Scope.getMdcManager()" is null at liquibase.Scope.addMdcValue(Scope.java:416)
     #+end_example
     This was reported as https://github.com/liquibase/liquibase/issues/3910
- 2. Starting with version 4.21.0 the Liquibase facade stopped working for me.  To avoid messages like this:
+ 3. Starting with version 4.21.0 the Liquibase facade stopped working for me.  To avoid messages like this:
     #+begin_example
       2022-09-10T13:47:54,302 | ERROR | CM Configuration Updater (ManagedServiceFactory Update: factoryPid=[org.ops4j.datasource]) | HandleregProductionDbLiquibaseRunner | 125 - no.priv.bang.handlereg.db.liquibase.production - 1.0.0.SNAPSHOT | Failed to create handlereg derby test database
       liquibase.exception.LiquibaseException: java.lang.RuntimeException: Cannot end scope cpkebkpkfa when currently at scope bbldyrztji
