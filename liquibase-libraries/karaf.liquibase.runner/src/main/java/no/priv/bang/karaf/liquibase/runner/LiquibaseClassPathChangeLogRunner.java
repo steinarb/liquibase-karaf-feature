@@ -15,7 +15,6 @@ package no.priv.bang.karaf.liquibase.runner;
  * under the License.
  */
 
-import static java.util.Optional.ofNullable;
 import static liquibase.Scope.Attr.resourceAccessor;
 import static liquibase.command.core.UpdateCommandStep.CHANGELOG_FILE_ARG;
 import static liquibase.command.core.helpers.DbUrlConnectionArgumentsCommandStep.DATABASE_ARG;
@@ -24,8 +23,6 @@ import java.sql.Connection;
 import java.util.Map;
 
 import liquibase.Scope;
-import liquibase.changelog.visitor.StandardValidatingVisitorGenerator;
-import liquibase.changelog.visitor.ValidatingVisitorGeneratorFactory;
 import liquibase.command.CommandResults;
 import liquibase.command.CommandScope;
 import liquibase.database.Database;
@@ -53,7 +50,6 @@ public class LiquibaseClassPathChangeLogRunner {
      */
     public CommandResults applyLiquibaseChangelist(Connection connect, String changelistClasspathResource, ClassLoader classLoader) throws LiquibaseException {
         try (var database = findCorrectDatabaseImplementation(connect)) {
-            createAndRegisterValidatingVisitorGeneratorIfItIsMissing();
             return Scope.child(scopeObjectsWithClassPathResourceAccessor(classLoader), () -> new CommandScope("update")
                 .addArgumentValue(DATABASE_ARG, database)
                 .addArgumentValue(CHANGELOG_FILE_ARG, changelistClasspathResource)
@@ -64,11 +60,6 @@ public class LiquibaseClassPathChangeLogRunner {
             // AutoClosable.close() may throw Exception
             throw new LiquibaseException(e);
         }
-    }
-
-    private void createAndRegisterValidatingVisitorGeneratorIfItIsMissing() {
-        var factory = Scope.getCurrentScope().getSingleton(ValidatingVisitorGeneratorFactory.class);
-        ofNullable(factory.getValidatingVisitorGenerator()).ifPresentOrElse(v -> {}, () -> factory.register(new StandardValidatingVisitorGenerator()));
     }
 
     private Map<String, Object> scopeObjectsWithClassPathResourceAccessor(ClassLoader classLoader) {
