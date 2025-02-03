@@ -14,7 +14,6 @@
 
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="ukelonn.bundle.db.liquibase">
     <feature name="liquibase-core" start-level="${liquibase-core.start.level}" version="${liquibase.version}">
-        <feature>aries-proxy</feature>
-        <bundle start-level="35">mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${spifly.dynamic.bundle.version}</bundle>
+        <feature>spifly</feature>
     </feature>
 </features>
