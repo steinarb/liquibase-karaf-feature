@@ -18,7 +18,7 @@
     <parent>
         <groupId>no.priv.bang.karaf</groupId>
         <artifactId>liquibase-libraries</artifactId>
-        <version>4.31.0</version>
+        <version>4.31.1-SNAPSHOT</version>
     </parent>
     <artifactId>karaf.liquibase.runner</artifactId>
 
@@ -197,8 +197,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-  <scm>
-    <tag>liquibase-karaf-feature-4.31.0</tag>
-  </scm>
 </project>
