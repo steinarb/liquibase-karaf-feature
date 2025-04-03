@@ -26,7 +26,7 @@
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
     <properties>
-        <liquibase.version>4.31.0</liquibase.version>
+        <liquibase.version>4.31.1</liquibase.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
         <karaf.version>4.4.7</karaf.version>
