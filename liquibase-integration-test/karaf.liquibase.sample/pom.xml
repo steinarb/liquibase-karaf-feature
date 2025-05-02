@@ -130,6 +130,12 @@
             <artifactId>liquibase-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.java.dev.msv</groupId>
+            <artifactId>msv-rngconverter</artifactId>
+            <version>2022.7</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -170,6 +176,30 @@
                                 </artifactItem>
                             </artifactItems>
                             <includes>**/dbchangelog-${liquibase.xsd-version}.xsd</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <classpathScope>test</classpathScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>convert-liquibase-xsd-to-rng</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.sun.msv.writer.relaxng.Driver</mainClass>
+                            <commandlineArgs>
+                                ${project.build.directory}/dependency/www.liquibase.org/xml/ns/dbchangelog/dbchangelog-${liquibase.xsd-version}.xsd
+                                ${project.build.directory}/dbchangelog-${liquibase.xsd-version}.rng
+                            </commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>
