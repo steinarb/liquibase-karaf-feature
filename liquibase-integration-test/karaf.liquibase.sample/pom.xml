@@ -136,6 +136,12 @@
             <version>2022.7</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.relaxng</groupId>
+            <artifactId>trang</artifactId>
+            <version>20241231</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -200,6 +206,20 @@
                                 ${project.build.directory}/dependency/www.liquibase.org/xml/ns/dbchangelog/dbchangelog-${liquibase.xsd-version}.xsd
                                 ${project.build.directory}/dbchangelog-${liquibase.xsd-version}.rng
                             </commandlineArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>convert-liquibase-rng-to-rnc-no-version</id>
+                        <phase>test</phase> <!-- must be test scope to build workaround driver class -->
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>no.priv.bang.karaf.sample.TrangDriver</mainClass> <!-- workaround because trang driver calls System.exit() -->
+                            <arguments>
+                                <argument>${project.build.directory}/dbchangelog-${liquibase.xsd-version}.rng</argument>
+                                <argument>${project.basedir}/src/main/resources/sample-db-changelog/dbchangelog.rnc</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>
