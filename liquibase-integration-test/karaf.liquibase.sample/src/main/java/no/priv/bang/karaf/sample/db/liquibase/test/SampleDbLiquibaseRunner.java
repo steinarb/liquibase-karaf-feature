@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 Steinar Bang
+ * Copyright 2022-2025 Steinar Bang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.log.LogService;
 import org.osgi.service.log.Logger;
 
-import liquibase.Scope;
-import liquibase.ThreadLocalScopeManager;
 import no.priv.bang.karaf.liquibase.runner.LiquibaseClassPathChangeLogRunner;
 
 @Component(immediate=true, property = "name=sampledb")
@@ -42,8 +40,7 @@ public class SampleDbLiquibaseRunner extends LiquibaseClassPathChangeLogRunner i
 
     @Activate
     public void activate(BundleContext bundlecontext) {
-        Scope.setScopeManager(new ThreadLocalScopeManager());
-        bundlecontext.getBundle();
+        // Called after all injections have been satisfied and before the PreHook service is exposed
     }
 
     @Override
