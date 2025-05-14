@@ -218,7 +218,7 @@
                             <mainClass>no.priv.bang.karaf.sample.TrangDriver</mainClass> <!-- workaround because trang driver calls System.exit() -->
                             <arguments>
                                 <argument>${project.build.directory}/dbchangelog-${liquibase.xsd-version}.rng</argument>
-                                <argument>${project.basedir}/src/main/resources/sample-db-changelog/dbchangelog.rnc</argument>
+                                <argument>${project.build.directory}/dbchangelog.rnc</argument>
                             </arguments>
                         </configuration>
                     </execution>

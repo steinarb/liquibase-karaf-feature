@@ -12,6 +12,7 @@
 <!-- See the License for the specific language governing permissions and  -->
 <!-- limitations under the License.                                       -->
 
+<!-- If liquibase Relax-NG schema is missing run "mvn install" to generate it -->
 <locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
-    <namespace ns="http://www.liquibase.org/xml/ns/dbchangelog" uri="dbchangelog.rnc" />
+    <namespace ns="http://www.liquibase.org/xml/ns/dbchangelog" uri="../../../../target/dbchangelog.rnc" />
 </locatingRules>
