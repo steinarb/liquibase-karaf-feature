@@ -38,7 +38,7 @@
         <assertj.version>3.27.3</assertj.version>
         <osgi-service-adapters.version>1.2.0</osgi-service-adapters.version>
         <pax.jdbc.version>1.5.7</pax.jdbc.version>
-        <derby.version>10.14.2.0</derby.version>
+        <derby.version>10.17.1.0</derby.version>
     </properties>
 
     <modules>
