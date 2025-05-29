@@ -210,12 +210,13 @@
                     </execution>
                     <execution>
                         <id>convert-liquibase-rng-to-rnc-no-version</id>
-                        <phase>test</phase> <!-- must be test scope to build workaround driver class -->
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>no.priv.bang.karaf.sample.TrangDriver</mainClass> <!-- workaround because trang driver calls System.exit() -->
+                            <mainClass>com.thaiopensource.relaxng.translate.Driver</mainClass>
+                            <blockSystemExit>true</blockSystemExit>
                             <arguments>
                                 <argument>${project.build.directory}/dbchangelog-${liquibase.xsd-version}.rng</argument>
                                 <argument>${project.build.directory}/dbchangelog.rnc</argument>
