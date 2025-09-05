@@ -154,6 +154,7 @@
                     <completionGoals>versions:set-property</completionGoals>
                     <pushChanges>false</pushChanges>
                     <localCheckout>true</localCheckout>
+                    <arguments>-Pliquibase-karaf-feature-release-prepare</arguments>
                 </configuration>
             </plugin>
             <plugin>
@@ -214,6 +215,23 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>liquibase-karaf-feature-release-prepare</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <version>2.19.0</version>
+                        <configuration>
+                            <property>bang-bom.version</property>
+                            <newVersion>${project.version}</newVersion>
+                            <generateBackupPoms>false</generateBackupPoms>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
