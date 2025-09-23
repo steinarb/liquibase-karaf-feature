@@ -35,7 +35,7 @@
         <!-- versions of dependencies used in integration and unit tests -->
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
         <mockito.version>5.20.0</mockito.version>
-        <assertj.version>3.27.5</assertj.version>
+        <assertj.version>3.27.6</assertj.version>
         <osgi-service-adapters.version>1.2.0</osgi-service-adapters.version>
         <pax.jdbc.version>1.5.7</pax.jdbc.version>
         <derby.version>10.14.2.0</derby.version>
