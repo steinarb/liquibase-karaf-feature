@@ -171,6 +171,23 @@
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>4.0.4</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <jacocoReports>
+                        <jacocoReport>${project.build.directory}/site/jacoco/jacoco.xml</jacocoReport>
+                    </jacocoReports>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
