@@ -29,7 +29,7 @@
         <liquibase.version>5.0.1</liquibase.version>
         <liquibase.xsd-version>5.0</liquibase.xsd-version> <!-- Used to include current XSD as classpath resource for liqubase changelist parsing -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.bundle.plugin.version>6.0.0</maven.bundle.plugin.version>
+        <maven.bundle.plugin.version>6.0.2</maven.bundle.plugin.version>
         <karaf.version>4.4.10</karaf.version>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <!-- versions of dependencies used in integration and unit tests -->
