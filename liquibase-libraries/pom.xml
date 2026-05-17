@@ -23,7 +23,7 @@
     <artifactId>liquibase-libraries</artifactId>
     <packaging>pom</packaging>
 
-    <name>Liqubase support libraries parent</name>
+    <name>Liquibase support libraries parent</name>
     <description>Parent for libraries containing liquibase utilities</description>
 
     <modules>

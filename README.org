@@ -114,7 +114,7 @@ But unfortunately this means that a SNAPSHOT version of the feature won't be abl
 
 *** Test a new version
 
-I have created the project [[https://github.com/steinarb/liquibase-sample#liqubase-sample][liquibase-sample]] to test new versions of this karaf feature.
+I have created the project [[https://github.com/steinarb/liquibase-sample#liquibase-sample][liquibase-sample]] to test new versions of this karaf feature.
 
 The liquibase-sample has a minimal OSGi component that loads and creates a schema in a derby in-memory database from a liquibase changelog file.
 

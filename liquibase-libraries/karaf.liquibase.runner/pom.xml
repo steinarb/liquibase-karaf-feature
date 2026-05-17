@@ -22,7 +22,7 @@
     </parent>
     <artifactId>karaf.liquibase.runner</artifactId>
 
-    <name>Liqubase class path changelist runner</name>
+    <name>Liquibase class path changelist runner</name>
     <description>Base class for classes running changelists loaded from the classpath</description>
 
     <properties>

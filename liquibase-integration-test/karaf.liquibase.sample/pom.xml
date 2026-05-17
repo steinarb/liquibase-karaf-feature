@@ -22,7 +22,7 @@
     </parent>
     <artifactId>karaf.liquibase.sample</artifactId>
 
-    <name>Liqubase karaf feature sample usage</name>
+    <name>Liquibase karaf feature sample usage</name>
     <description>OSGi bundle using the liquibase feature to set up a database, for use in integration test</description>
 
     <properties>

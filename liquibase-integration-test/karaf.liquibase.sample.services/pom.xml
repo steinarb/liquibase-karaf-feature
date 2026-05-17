@@ -22,7 +22,7 @@
     </parent>
     <artifactId>karaf.liquibase.sample.services</artifactId>
 
-    <name>Liqubase karaf feature sample OSGi services</name>
+    <name>Liquibase karaf feature sample OSGi services</name>
     <description>OSGi bundle defining a service that can be used by the integration test to verify the created database</description>
 
     <properties>

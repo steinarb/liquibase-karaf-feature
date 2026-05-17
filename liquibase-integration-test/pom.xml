@@ -23,7 +23,7 @@
     <artifactId>liquibase-integration-test</artifactId>
     <packaging>pom</packaging>
 
-    <name>Liqubase karaf feature integration tests parent</name>
+    <name>Liquibase karaf feature integration tests parent</name>
     <description>Parent for karaf liquibase feature integration test</description>
 
     <modules>

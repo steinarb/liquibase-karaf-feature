@@ -22,7 +22,7 @@
     </parent>
     <artifactId>karaf.liquibase.sample.datasource.receiver</artifactId>
 
-    <name>Liqubase karaf feature sample datasource receiver</name>
+    <name>Liquibase karaf feature sample datasource receiver</name>
     <description>OSGi bundle that gets injected by the datasource object, for use in integration test</description>
 
     <properties>
