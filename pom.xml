@@ -177,16 +177,6 @@ limitations under the License.
                 <artifactId>central-publishing-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.21.0</version>
-                <configuration>
-                    <property>bang-bom.version</property>
-                    <newVersion>${project.version}</newVersion>
-                    <generateBackupPoms>false</generateBackupPoms>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
@@ -249,23 +239,6 @@ limitations under the License.
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>liquibase-karaf-feature-release-prepare</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>versions-maven-plugin</artifactId>
-                        <version>2.21.0</version>
-                        <configuration>
-                            <property>bang-bom.version</property>
-                            <newVersion>${project.version}</newVersion>
-                            <generateBackupPoms>false</generateBackupPoms>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
