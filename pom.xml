@@ -130,11 +130,6 @@ limitations under the License.
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>3.3.1</version>
-                </plugin>
-                <plugin>
                     <groupId>org.sonatype.central</groupId>
                     <artifactId>central-publishing-maven-plugin</artifactId>
                     <version>0.11.0</version>
@@ -147,18 +142,6 @@ limitations under the License.
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <releaseProfiles>release-sign-artifact</releaseProfiles>
-                    <preparationGoals>clean versions:set-property verify</preparationGoals>
-                    <completionGoals>versions:set-property</completionGoals>
-                    <pushChanges>false</pushChanges>
-                    <localCheckout>true</localCheckout>
-                    <arguments>-Pliquibase-karaf-feature-release-prepare</arguments>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
