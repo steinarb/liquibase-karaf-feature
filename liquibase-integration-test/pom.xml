@@ -20,7 +20,7 @@ limitations under the License.
     <parent>
         <groupId>no.priv.bang.karaf</groupId>
         <artifactId>liquibase-karaf-feature</artifactId>
-        <version>5.0.4-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>liquibase-integration-test</artifactId>
     <packaging>pom</packaging>

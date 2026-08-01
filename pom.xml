@@ -19,7 +19,7 @@ limitations under the License.
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.priv.bang.karaf</groupId>
     <artifactId>liquibase-karaf-feature</artifactId>
-    <version>5.0.4-SNAPSHOT</version>
+    <version>${revision}</version>
 
     <packaging>pom</packaging>
 
@@ -28,6 +28,7 @@ limitations under the License.
     <url>https://github.com/steinarb/liquibase-karaf-feature</url>
 
     <properties>
+        <revision>999-SNAPSHOT</revision>
         <liquibase.version>5.0.3</liquibase.version>
         <liquibase.xsd-version>5.0</liquibase.xsd-version> <!-- Used to include current XSD as classpath resource for liquibase changelist parsing -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
