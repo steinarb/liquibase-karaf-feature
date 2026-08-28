@@ -29,7 +29,7 @@ limitations under the License.
 
     <properties>
         <revision>999-SNAPSHOT</revision>
-        <liquibase.version>5.0.3</liquibase.version>
+        <liquibase.version>5.0.4</liquibase.version>
         <liquibase.xsd-version>5.0</liquibase.xsd-version> <!-- Used to include current XSD as classpath resource for liquibase changelist parsing -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.bundle.plugin.version>6.1.0</maven.bundle.plugin.version>
